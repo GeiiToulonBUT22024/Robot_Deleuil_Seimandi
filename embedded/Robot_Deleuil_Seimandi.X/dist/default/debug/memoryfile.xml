@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project>
-  <executable name="dist/default/debug/Robot_Seimandi_Villeneuve.X.debug.elf">
+  <executable name="dist/default/debug/Robot_Deleuil_Seimandi.X.debug.elf">
     <memory name="data">
       <units>bytes</units>
       <length>49152</length>
-      <used>80</used>
-      <free>49072</free>
+      <used>102</used>
+      <free>49050</free>
     </memory>
     <memory name="program">
       <units>bytes</units>
       <length>524514</length>
-      <used>918</used>
-      <free>523596</free>
+      <used>3462</used>
+      <free>521052</free>
     </memory>
   </executable>
 </project>
