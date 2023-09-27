@@ -1,8 +1,8 @@
 /* 
  * File:   Toolbox.h
- * Author: TP-EO-1
+ * Author: GEII Robot
  *
- * Created on 13 septembre 2023, 16:03
+ * Created on 27 septembre 2023, 08:45
  */
 
 #ifndef TOOLBOX_H
@@ -14,6 +14,8 @@ float Min(float value, float value2);
 float LimitToInterval(float value, float lowLimit, float highLimit);
 float RadianToDegree(float value);
 float DegreeToRadian(float value);
+
+#define PI 3.141592653589793
 
 #endif	/* TOOLBOX_H */
 

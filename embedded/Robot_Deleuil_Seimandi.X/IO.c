@@ -4,10 +4,9 @@
 
 #include <xc.h>
 #include "IO.h"
-//include "main.h"
+//#include "main.h"
 
-void InitIO()
-{
+void InitIO() {
     // IMPORTANT : désactiver les entrées analogiques, sinon on perd les entrées numériques
     ANSELA = 0; // 0 desactive
     ANSELB = 0;
@@ -20,26 +19,34 @@ void InitIO()
     // Configuration des sorties
 
     //******* LED ***************************
-    _TRISC10 = 0;  // LED Orange
-    _TRISG6  = 0; //LED Blanche
-    _TRISG7  = 0; // LED Bleue
+    _TRISC10 = 0; // LED Orange
+    _TRISG6 = 0; //LED Blanche
+    _TRISG7 = 0; // LED Bleue
 
-    
+//moteurs
+    _TRISB14 = 0;
+    _TRISB15 = 0;
+    _TRISC6 = 0;
+    _TRISC7 = 0;
+
+
     //****** Moteurs ************************
 
     // Configuration des entrées
-    
+
 
     // Configuration des pins remappables    
+
     //*************************************************************
     // Unlock Registers
     //*************************************************************
-    __builtin_write_OSCCONL(OSCCON & ~(1<<6)); 
-    
+    __builtin_write_OSCCONL(OSCCON & ~(1 << 6));
+
     //Assignation des remappable pins
-    
+
     //*************************************************************
     // Lock Registers
     //*************************************************************
-    __builtin_write_OSCCONL(OSCCON | (1<<6));
+    __builtin_write_OSCCONL(OSCCON | (1 << 6));
 }
+
