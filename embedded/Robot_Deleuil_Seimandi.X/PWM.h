@@ -12,7 +12,10 @@
 
         
 void InitPWM(void);
-void PWMSetSpeed(float vitesseEnPourcents, uint8_t moteur);
+// void PWMSetSpeed(float vitesseEnPourcents, uint8_t moteur); (decrepated)
+void PWMUpdateSpeed();
+void PWMSetSpeedConsigne(float vitesse, char moteur);
+
 
 #endif	/* PWM_H */
 
