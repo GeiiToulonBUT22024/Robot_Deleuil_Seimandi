@@ -3,9 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Github/Robot_Deleuil_Seimandi/embedded/Robot_Deleuil_Seimandi.X/PWM.c</file>
-            <file>file:/C:/Github/Robot_Deleuil_Seimandi/embedded/Robot_Deleuil_Seimandi.X/timer.c</file>
             <file>file:/C:/Github/Robot_Deleuil_Seimandi/embedded/Robot_Deleuil_Seimandi.X/main.c</file>
+            <file>file:/C:/Github/Robot_Deleuil_Seimandi/embedded/Robot_Deleuil_Seimandi.X/PWM.c</file>
+            <file>file:/C:/Github/Robot_Deleuil_Seimandi/embedded/Robot_Deleuil_Seimandi.X/IO.c</file>
+            <file>file:/C:/Github/Robot_Deleuil_Seimandi/embedded/Robot_Deleuil_Seimandi.X/PWM.h</file>
+            <file>file:/C:/Github/Robot_Deleuil_Seimandi/embedded/Robot_Deleuil_Seimandi.X/IO.h</file>
         </group>
     </open-files>
 </project-private>
