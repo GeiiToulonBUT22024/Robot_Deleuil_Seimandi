@@ -7,6 +7,7 @@
 
 #define PWMPER 40.0
 
+
 void InitPWM(void) {
     PTCON2bits.PCLKDIV = 0b000; //Divide by 1
     PTPER = 100 * PWMPER; //Période en pourcentage
@@ -62,8 +63,8 @@ void InitPWM(void) {
 }*/
 
 void PWMSetSpeedConsigne(float consigne, char moteur) {
-    if(moteur == MOTEUR_DROIT) robotState.vitesseDroiteConsigne = consigne;
-    else if(moteur == MOTEUR_GAUCHE) robotState.vitesseGaucheConsigne = consigne;
+    if (moteur == MOTEUR_GAUCHE) robotState.vitesseDroiteConsigne = consigne * COEF_D;
+    else if (moteur == MOTEUR_DROIT) robotState.vitesseGaucheConsigne = consigne;
 }
 
 void PWMUpdateSpeed() {
@@ -83,6 +84,8 @@ void PWMUpdateSpeed() {
         MOTEUR_DROIT_H_PWM_ENABLE = 1; //Pilotage de la pin en mode PWM
     }
     MOTEUR_DROIT_DUTY_CYCLE = Abs(robotState.vitesseDroiteCommandeCourante) * PWMPER;
+
+
 
     if (robotState.vitesseGaucheCommandeCourante < robotState.vitesseGaucheConsigne)
         robotState.vitesseGaucheCommandeCourante = Min(robotState.vitesseGaucheCommandeCourante + robotState.acceleration, robotState.vitesseGaucheConsigne);

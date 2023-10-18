@@ -11,6 +11,7 @@
       <itemPath>PWM.h</itemPath>
       <itemPath>Toolbox.h</itemPath>
       <itemPath>main.h</itemPath>
+      <itemPath>ADC.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -33,7 +34,6 @@
                    projectFiles="false">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
-    <itemPath>ADC.h</itemPath>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -283,7 +283,7 @@
         <property key="memories.programmemory.ranges" value="0-557eb"/>
         <property key="poweroptions.powerenable" value="false"/>
         <property key="programmerToGoFilePath"
-                  value="C:/Github/Robot_Deleuil_Seimandi/embedded/Robot_Deleuil_Seimandi.X/debug/default/Robot_Deleuil_Seimandi_ptg"/>
+                  value="C:/Github/Robot_Seimandi_Villeneuve/embedded/Robot_Seimandi_Villeneuve.X/debug/default/Robot_Seimandi_Villeneuve_ptg"/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>
         <property key="programoptions.ledbrightness" value="5"/>
