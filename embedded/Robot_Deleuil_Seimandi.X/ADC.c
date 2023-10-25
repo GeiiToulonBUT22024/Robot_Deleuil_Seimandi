@@ -84,7 +84,7 @@ void ADC1StartConversionSequence() {
     AD1CON1bits.SAMP = 1; //Lance une acquisition ADC
 }
 
-unsigned int * ADCGetResult(void) {-
+unsigned int * ADCGetResult(void) {
     return ADCResult;
 }
 
