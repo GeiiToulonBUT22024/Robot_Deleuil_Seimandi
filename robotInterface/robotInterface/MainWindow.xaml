@@ -1,0 +1,32 @@
+﻿<Window x:Class="robotInterface.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:robotInterface"
+        mc:Ignorable="d"
+        Title="Robot Interface" Height="450" Width="800" KeyUp="Window_KeyUp">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="30"/>
+        </Grid.ColumnDefinitions>
+        <GroupBox Header="Emission" Background="#FFDDDDDD" BorderBrush="Black" Grid.Column="1" Grid.Row="1">
+            <TextBox x:Name="textBoxEmission" TextWrapping="Wrap" Text="" Background="{x:Null}" AcceptsReturn="True" BorderBrush="{x:Null}" KeyUp="textBoxEmission_KeyUp"/>
+        </GroupBox>
+        <GroupBox Header="Réception" Background="#FFDDDDDD" BorderBrush="Black" Grid.Column="3" Grid.Row="1">
+            <TextBox x:Name="RichTextBox" TextWrapping="Wrap" Text="" Background="{x:Null}" AcceptsReturn="True" IsReadOnly="True" BorderBrush="{x:Null}" AcceptsTab="True" SelectionBrush="{x:Null}" SelectionTextBrush="{x:Null}"/>
+        </GroupBox>
+        <Button x:Name="btnEnvoyer" Grid.Column="1" Content="Envoyer" Grid.Row="3" HorizontalAlignment="Center" Width="100" Click="btnEnvoyer_Click"/>
+    </Grid>
+</Window>
