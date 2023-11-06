@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ExtendedSerialPort;
 using System.IO.Ports;
+using System.Windows.Threading;
 
 namespace robotInterface
 {
@@ -23,21 +24,66 @@ namespace robotInterface
     public partial class MainWindow : Window
     {
         private bool btnClickFlag = false;
+        private bool btnClickFlagClear = false;
+
         private ReliableSerialPort serialPort1;
+        private bool isSerialPortAvailable = false;
+        private DispatcherTimer timerDisplay;
+        private Robot robot = new Robot();
+
 
         public MainWindow()
         {
             InitializeComponent();
-            serialPort1 = new ReliableSerialPort("COM6", 115200, Parity.None, 8, StopBits.One);
-            serialPort1.Open();
+            InitializeSerialPort();
+
+            btnEnvoyer.Background = Brushes.Beige;
+            btnClear.Background = Brushes.Beige;
+
+
+
+            timerDisplay = new DispatcherTimer();
+            timerDisplay.Interval = new TimeSpan(0, 0, 0, 0, 100);
+            timerDisplay.Tick += TimerDisplay_Tick;
+            timerDisplay.Start();
         }
-        
+
+        private void TimerDisplay_Tick(object? sender, EventArgs e)
+        {
+            if (robot.receivedText != "")
+            {
+                textBoxReception.Text += robot.receivedText;
+                robot.receivedText = "";
+            }
+        }
+
+        private void InitializeSerialPort()
+        {
+            string comPort = "COM6";
+            if(SerialPort.GetPortNames().Contains(comPort)){
+                serialPort1 = new ReliableSerialPort("COM6", 115200, Parity.None, 8, StopBits.One);
+                serialPort1.OnDataReceivedEvent += SerialPort1_DataReceived;
+                try
+                {
+                    serialPort1.Open();
+                    isSerialPortAvailable = true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error opening serial port: " + ex.Message);
+                }
+            }
+        }
+
+        public void SerialPort1_DataReceived(object? sender, DataReceivedArgs e) {
+            robot.receivedText += Encoding.UTF8.GetString(e.Data, 0, e.Data.Length);
+        }
+
         private bool sendMessage(bool key) // key = true si appuie sur Enter et false autrement
         {
             if (textBoxEmission.Text == "\r\n" || textBoxEmission.Text == "") return false;
 
             serialPort1.WriteLine(textBoxEmission.Text);
-            // RichTextBox.Text += "Reçu: " + textBoxEmission.Text + (key ? "" : "\n");
             textBoxEmission.Text = "";
             return true;
         }
@@ -55,6 +101,21 @@ namespace robotInterface
             btnClickFlag = !btnClickFlag;
 
             sendMessage(false);
+        }
+
+        private void btnClear_Click(object sender, RoutedEventArgs e)
+        {
+            if (btnClickFlagClear)
+            {
+                btnClear.Background = Brushes.RoyalBlue;
+            }
+            else
+            {
+                btnClear.Background = Brushes.Beige;
+            }
+            btnClickFlagClear = !btnClickFlagClear;
+
+            textBoxReception.Text = "";
         }
 
         private void textBoxEmission_KeyUp(object sender, KeyEventArgs e)
