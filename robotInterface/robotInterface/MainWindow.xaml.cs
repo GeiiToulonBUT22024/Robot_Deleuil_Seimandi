@@ -83,7 +83,11 @@ namespace robotInterface
         {
             if (textBoxEmission.Text == "\r\n" || textBoxEmission.Text == "") return false;
 
-            serialPort1.WriteLine(textBoxEmission.Text);
+            byte[] payload=new byte[textBoxEmission.Text.Length];
+
+            for (int i = 0; i < textBoxEmission.Text.Length; i++)
+                payload[i] = (byte)textBoxEmission.Text[i];
+            serialPort1.SendMessage(this,payload);
             textBoxEmission.Text = "";
             return true;
         }
