@@ -90,63 +90,84 @@ int main(void) {
             }
             float baseGauche = VITESSE;
             float baseDroite = VITESSE;
+            int isViteVite = 1;
             if(robotState.distanceTelemetreMelanchon <= 40) {
-                if(robotState.distanceTelemetreMelanchon <= 25) {
+                isViteVite = 0;
+                /*if(robotState.distanceTelemetreMelanchon <= 25) {
                     baseGauche += VITESSE / 3.0f;
                     baseDroite -= VITESSE / 3.0f; 
                 }
                 else {
                     baseGauche += VITESSE / 5.0f;
                     baseDroite -= VITESSE / 5.0f; 
-                }
+                }*/
+                baseGauche += (-0.075) * robotState.distanceTelemetreMelanchon + 5;
+                baseDroite -= (-0.075) * robotState.distanceTelemetreMelanchon + 5;
             }
             
             if(robotState.distanceTelemetreGauche <= 40) {
-                if(robotState.distanceTelemetreGauche <= 25) {
+                isViteVite = 0;
+                /*if(robotState.distanceTelemetreGauche <= 25) {
                     baseGauche += VITESSE / 3.0f;
                     baseDroite -= VITESSE / 3.0f; 
                 }
                 else {
                     baseGauche += VITESSE / 5.0f;
                     baseDroite -= VITESSE / 5.0f; 
-                }
+                }*/
+                baseGauche += (-0.075) * robotState.distanceTelemetreGauche + 5;
+                baseDroite -= (-0.075) * robotState.distanceTelemetreGauche + 5;
             }
             
             if(robotState.distanceTelemetreCentre <= 30) {
-                if(robotState.distanceTelemetreCentre <= 18) {
-                    baseGauche -= VITESSE * 1.2f;
-                    baseDroite -= VITESSE * 1.2; 
+                isViteVite = 0;
+                /*if(robotState.distanceTelemetreCentre <= 18) {
+                    baseGauche -= VITESSE * 2.0f;
+                    baseDroite -= VITESSE * 2.0; 
                 }
                 else {
                     baseGauche -= VITESSE * 0.5f;
                     baseDroite -= VITESSE * 0.5f; 
-                }
+                }*/
+                baseGauche -= (-1.25) * robotState.distanceTelemetreCentre + 42.5;
+                baseGauche -= (-1.25) * robotState.distanceTelemetreCentre + 42.5;
             }
             
             if(robotState.distanceTelemetreDroit <= 40) {
-                if(robotState.distanceTelemetreDroit <= 25) {
+                isViteVite = 0;
+                /*if(robotState.distanceTelemetreDroit <= 25) {
                     baseGauche -= VITESSE / 3.0f;
                     baseDroite += VITESSE / 3.0f; 
                 }
                 else {
                     baseGauche -= VITESSE / 5.0f;
                     baseDroite += VITESSE / 5.0f; 
-                }
+                }*/
+                baseGauche -= (-0.075) * robotState.distanceTelemetreDroit + 5;
+                baseDroite += (-0.075) * robotState.distanceTelemetreDroit + 5;
             }
             
             if(robotState.distanceTelemetreLePen <= 40) {
-                if(robotState.distanceTelemetreLePen <= 25) {
+                isViteVite = 0;
+                /*if(robotState.distanceTelemetreLePen <= 25) {
                     baseGauche -= VITESSE / 3.0f;
                     baseDroite += VITESSE / 3.0f; 
                 }
                 else {
                     baseGauche += VITESSE / 5.0f;
                     baseDroite -= VITESSE / 5.0f; 
-                }
+                }*/
+                baseGauche -= (-0.075) * robotState.distanceTelemetreLePen + 5;
+                baseDroite += (-0.075) * robotState.distanceTelemetreLePen + 5;
             }
-            
-            PWMSetSpeedConsigne(baseGauche, MOTEUR_GAUCHE);
-            PWMSetSpeedConsigne(baseDroite, MOTEUR_DROIT);
+            if(isViteVite) {
+                PWMSetSpeedConsigne(VITE_VITE, MOTEUR_GAUCHE);
+                PWMSetSpeedConsigne(VITE_VITE, MOTEUR_DROIT);
+            }
+            else {
+                PWMSetSpeedConsigne(baseGauche, MOTEUR_GAUCHE);
+                PWMSetSpeedConsigne(baseDroite, MOTEUR_DROIT);
+            }
             /*float uVect[3] = {robotState.distanceTelemetreMelanchon * 0.5f + robotState.distanceTelemetreGauche * 0.866f,
                 robotState.distanceTelemetreGauche * 0.866f + robotState.distanceTelemetreCentre + robotState.distanceTelemetreDroit * 0.866f,
                 robotState.distanceTelemetreDroit * 0.866f + robotState.distanceTelemetreLePen * 0.5f};

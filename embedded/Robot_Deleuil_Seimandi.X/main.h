@@ -24,7 +24,8 @@
 #define OBSTACLE_A_DROITE 2
 #define OBSTACLE_EN_FACE 3
 
-#define VITESSE 25
+#define VITESSE 10
+#define VITE_VITE 25
 
 #define FCY 40000000
 
