@@ -50,18 +50,23 @@ namespace robotInterface
 
         private void TimerDisplay_Tick(object? sender, EventArgs e)
         {
-            if (robot.receivedText != "")
+            /*if (robot.receivedText != "")
             {
                 textBoxReception.Text += robot.receivedText;
                 robot.receivedText = "";
+            }*/
+            while(robot.byteListReceived.Count != 0)
+            {
+                byte current = robot.byteListReceived.Dequeue();
+                textBoxReception.Text += current.ToString("X2") + " ";
             }
         }
 
         private void InitializeSerialPort()
         {
-            string comPort = "COM6";
+            string comPort = "COM7";
             if(SerialPort.GetPortNames().Contains(comPort)){
-                serialPort1 = new ReliableSerialPort("COM6", 115200, Parity.None, 8, StopBits.One);
+                serialPort1 = new ReliableSerialPort(comPort, 115200, Parity.None, 8, StopBits.One);
                 serialPort1.OnDataReceivedEvent += SerialPort1_DataReceived;
                 try
                 {
@@ -76,7 +81,9 @@ namespace robotInterface
         }
 
         public void SerialPort1_DataReceived(object? sender, DataReceivedArgs e) {
-            robot.receivedText += Encoding.UTF8.GetString(e.Data, 0, e.Data.Length);
+            // robot.receivedText += Encoding.UTF8.GetString(e.Data, 0, e.Data.Length);
+            for (int i = 0; i < e.Data.Length; i++)
+                robot.byteListReceived.Enqueue(e.Data[i]);
         }
 
         private bool sendMessage(bool key) // key = true si appuie sur Enter et false autrement
@@ -139,5 +146,14 @@ namespace robotInterface
                 Close();
             }
         }
+
+        private void btnTest_Click(object sender, RoutedEventArgs e)
+        {
+            byte[] byteList = new byte[20];
+            for (int i = 19; i >= 0; i--)
+                byteList[i]= (byte) (2*i);
+            serialPort1.Write(byteList, 0, 20);
+        }
+
     }
 }

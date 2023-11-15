@@ -13,6 +13,7 @@
 #include "PWM.h"
 #include "main.h"
 #include "Toolbox.h"
+#include "UART.h"
 
 extern unsigned long timestamp;
 
@@ -37,6 +38,8 @@ int main(void) {
 
     InitADC1();
     robotState.acceleration = 2;
+    
+    InitUART();
 
 
     // PWMSetSpeedConsigne(25, MOTEUR_DROIT);
@@ -101,8 +104,8 @@ int main(void) {
                     baseGauche += VITESSE / 5.0f;
                     baseDroite -= VITESSE / 5.0f; 
                 }*/
-                baseGauche += (-0.075) * robotState.distanceTelemetreMelanchon + 5;
-                baseDroite -= (-0.075) * robotState.distanceTelemetreMelanchon + 5;
+                baseGauche += (-0.055) * robotState.distanceTelemetreMelanchon + 5;
+                baseDroite -= (-0.055) * robotState.distanceTelemetreMelanchon + 5;
             }
             
             if(robotState.distanceTelemetreGauche <= 40) {
@@ -129,8 +132,9 @@ int main(void) {
                     baseGauche -= VITESSE * 0.5f;
                     baseDroite -= VITESSE * 0.5f; 
                 }*/
-                baseGauche -= (-1.25) * robotState.distanceTelemetreCentre + 42.5;
-                baseGauche -= (-1.25) * robotState.distanceTelemetreCentre + 42.5;
+                baseGauche -= (-1.25) * robotState.distanceTelemetreCentre + 42.5 + (robotState.distanceTelemetreGauche > robotState.distanceTelemetreDroit ? 10 : -10);
+                baseDroite -= (-1.25) * robotState.distanceTelemetreCentre + 42.5 + (robotState.distanceTelemetreGauche > robotState.distanceTelemetreDroit ? -10 : 10);
+                
             }
             
             if(robotState.distanceTelemetreDroit <= 40) {
@@ -157,8 +161,9 @@ int main(void) {
                     baseGauche += VITESSE / 5.0f;
                     baseDroite -= VITESSE / 5.0f; 
                 }*/
-                baseGauche -= (-0.075) * robotState.distanceTelemetreLePen + 5;
-                baseDroite += (-0.075) * robotState.distanceTelemetreLePen + 5;
+                
+                baseGauche -= (-0.055) * robotState.distanceTelemetreLePen + 5;
+                baseDroite += (-0.055) * robotState.distanceTelemetreLePen + 5;
             }
             if(isViteVite) {
                 PWMSetSpeedConsigne(VITE_VITE, MOTEUR_GAUCHE);
