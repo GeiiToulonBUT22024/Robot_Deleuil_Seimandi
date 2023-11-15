@@ -132,8 +132,8 @@ int main(void) {
                     baseGauche -= VITESSE * 0.5f;
                     baseDroite -= VITESSE * 0.5f; 
                 }*/
-                baseGauche -= (-1.25) * robotState.distanceTelemetreCentre + 42.5 + (robotState.distanceTelemetreGauche > robotState.distanceTelemetreDroit ? 10 : -10);
-                baseDroite -= (-1.25) * robotState.distanceTelemetreCentre + 42.5 + (robotState.distanceTelemetreGauche > robotState.distanceTelemetreDroit ? -10 : 10);
+                baseGauche -= (-1.25) * robotState.distanceTelemetreCentre + 42.5 + ((robotState.distanceTelemetreMelanchon + robotState.distanceTelemetreGauche) > (robotState.distanceTelemetreLePen + robotState.distanceTelemetreDroit) ? 10 : -10);
+                baseDroite -= (-1.25) * robotState.distanceTelemetreCentre + 42.5 + ((robotState.distanceTelemetreMelanchon + robotState.distanceTelemetreGauche) > (robotState.distanceTelemetreLePen + robotState.distanceTelemetreDroit) ? -10 : 10);
                 
             }
             
