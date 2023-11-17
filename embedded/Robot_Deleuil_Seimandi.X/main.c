@@ -1,5 +1,3 @@
-
-
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
@@ -38,7 +36,7 @@ int main(void) {
 
     InitADC1();
     robotState.acceleration = 2;
-    
+
     InitUART();
 
 
@@ -71,107 +69,58 @@ int main(void) {
             robotState.distanceTelemetreMelanchon = 34 / volts - 5;
 
 
-
-            // Update LED
-            if (robotState.distanceTelemetreMelanchon >= 30.0f) {
-                LED_ORANGE = 1;
-            } else {
-                LED_ORANGE = 0;
-            }
-
-
-            if (robotState.distanceTelemetreCentre >= 30.0f) {
-                LED_BLEUE = 1;
-            } else {
-                LED_BLEUE = 0;
-            }
-
-            if (robotState.distanceTelemetreLePen >= 30.0f) {
-                LED_BLANCHE = 1;
-            } else {
-                LED_BLANCHE = 0;
-            }
             float baseGauche = VITESSE;
             float baseDroite = VITESSE;
             int isViteVite = 1;
-            if(robotState.distanceTelemetreMelanchon <= 40) {
+            if (robotState.distanceTelemetreMelanchon <= 40) {
                 isViteVite = 0;
-                /*if(robotState.distanceTelemetreMelanchon <= 25) {
-                    baseGauche += VITESSE / 3.0f;
-                    baseDroite -= VITESSE / 3.0f; 
-                }
-                else {
-                    baseGauche += VITESSE / 5.0f;
-                    baseDroite -= VITESSE / 5.0f; 
-                }*/
+
                 baseGauche += (-0.055) * robotState.distanceTelemetreMelanchon + 5;
                 baseDroite -= (-0.055) * robotState.distanceTelemetreMelanchon + 5;
             }
-            
-            if(robotState.distanceTelemetreGauche <= 40) {
+
+            if (robotState.distanceTelemetreGauche <= 40) {
                 isViteVite = 0;
-                /*if(robotState.distanceTelemetreGauche <= 25) {
-                    baseGauche += VITESSE / 3.0f;
-                    baseDroite -= VITESSE / 3.0f; 
-                }
-                else {
-                    baseGauche += VITESSE / 5.0f;
-                    baseDroite -= VITESSE / 5.0f; 
-                }*/
+
                 baseGauche += (-0.075) * robotState.distanceTelemetreGauche + 5;
                 baseDroite -= (-0.075) * robotState.distanceTelemetreGauche + 5;
             }
-            
-            if(robotState.distanceTelemetreCentre <= 30) {
+
+            if (robotState.distanceTelemetreCentre <= 30) {
                 isViteVite = 0;
-                /*if(robotState.distanceTelemetreCentre <= 18) {
-                    baseGauche -= VITESSE * 2.0f;
-                    baseDroite -= VITESSE * 2.0; 
-                }
-                else {
-                    baseGauche -= VITESSE * 0.5f;
-                    baseDroite -= VITESSE * 0.5f; 
-                }*/
+
                 baseGauche -= (-1.25) * robotState.distanceTelemetreCentre + 42.5 + ((robotState.distanceTelemetreMelanchon + robotState.distanceTelemetreGauche) > (robotState.distanceTelemetreLePen + robotState.distanceTelemetreDroit) ? 10 : -10);
                 baseDroite -= (-1.25) * robotState.distanceTelemetreCentre + 42.5 + ((robotState.distanceTelemetreMelanchon + robotState.distanceTelemetreGauche) > (robotState.distanceTelemetreLePen + robotState.distanceTelemetreDroit) ? -10 : 10);
-                
+
             }
-            
-            if(robotState.distanceTelemetreDroit <= 40) {
+
+            if (robotState.distanceTelemetreDroit <= 40) {
                 isViteVite = 0;
-                /*if(robotState.distanceTelemetreDroit <= 25) {
-                    baseGauche -= VITESSE / 3.0f;
-                    baseDroite += VITESSE / 3.0f; 
-                }
-                else {
-                    baseGauche -= VITESSE / 5.0f;
-                    baseDroite += VITESSE / 5.0f; 
-                }*/
+
                 baseGauche -= (-0.075) * robotState.distanceTelemetreDroit + 5;
                 baseDroite += (-0.075) * robotState.distanceTelemetreDroit + 5;
             }
-            
-            if(robotState.distanceTelemetreLePen <= 40) {
+
+            if (robotState.distanceTelemetreLePen <= 40) {
                 isViteVite = 0;
-                /*if(robotState.distanceTelemetreLePen <= 25) {
-                    baseGauche -= VITESSE / 3.0f;
-                    baseDroite += VITESSE / 3.0f; 
-                }
-                else {
-                    baseGauche += VITESSE / 5.0f;
-                    baseDroite -= VITESSE / 5.0f; 
-                }*/
-                
+
                 baseGauche -= (-0.055) * robotState.distanceTelemetreLePen + 5;
                 baseDroite += (-0.055) * robotState.distanceTelemetreLePen + 5;
             }
-            if(isViteVite) {
+            if (isViteVite) {
                 PWMSetSpeedConsigne(VITE_VITE, MOTEUR_GAUCHE);
                 PWMSetSpeedConsigne(VITE_VITE, MOTEUR_DROIT);
-            }
-            else {
+
+                LED_ORANGE = 1;
+                LED_BLEUE = 1;
+                LED_BLANCHE = 1;
+            } else {
                 PWMSetSpeedConsigne(baseGauche, MOTEUR_GAUCHE);
                 PWMSetSpeedConsigne(baseDroite, MOTEUR_DROIT);
+
+                LED_ORANGE = 0;
+                LED_BLEUE = 0;
+                LED_BLANCHE = 0;
             }
             /*float uVect[3] = {robotState.distanceTelemetreMelanchon * 0.5f + robotState.distanceTelemetreGauche * 0.866f,
                 robotState.distanceTelemetreGauche * 0.866f + robotState.distanceTelemetreCentre + robotState.distanceTelemetreDroit * 0.866f,
