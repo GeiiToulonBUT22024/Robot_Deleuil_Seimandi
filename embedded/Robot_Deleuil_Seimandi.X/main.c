@@ -15,7 +15,10 @@
 #include "Toolbox.h"
 #include "UART.h"
 
+
+
 extern unsigned long timestamp;
+
 
 unsigned char stateRobot;
 
@@ -38,7 +41,7 @@ int main(void) {
 
     InitADC1();
     robotState.acceleration = 2;
-    
+
     InitUART();
 
 
@@ -66,147 +69,151 @@ int main(void) {
 
             volts = ((float) result [3])* 3.3 / 4096 * 3.2;
             robotState.distanceTelemetreLePen = 34 / volts - 5;
+            robotState.distanceTelemetreLePen -= 5;
 
             volts = ((float) result [0])* 3.3 / 4096 * 3.2;
             robotState.distanceTelemetreMelanchon = 34 / volts - 5;
 
 
-
-            // Update LED
-            if (robotState.distanceTelemetreMelanchon >= 30.0f) {
-                LED_ORANGE = 1;
-            } else {
-                LED_ORANGE = 0;
-            }
-
-
-            if (robotState.distanceTelemetreCentre >= 30.0f) {
-                LED_BLEUE = 1;
-            } else {
-                LED_BLEUE = 0;
-            }
-
-            if (robotState.distanceTelemetreLePen >= 30.0f) {
-                LED_BLANCHE = 1;
-            } else {
-                LED_BLANCHE = 0;
-            }
             float baseGauche = VITESSE;
             float baseDroite = VITESSE;
             int isViteVite = 1;
-            if(robotState.distanceTelemetreMelanchon <= 40) {
+            int isMoyenVite = 1;
+
+            if (robotState.distanceTelemetreMelanchon <= SEUILMOYTECO) {
                 isViteVite = 0;
-                /*if(robotState.distanceTelemetreMelanchon <= 25) {
-                    baseGauche += VITESSE / 3.0f;
-                    baseDroite -= VITESSE / 3.0f; 
+                if (robotState.distanceTelemetreMelanchon <= SEUILTECO) {
+                    isMoyenVite = 0;
+                    /*if(robotState.distanceTelemetreMelanchon <= 25) {
+                        baseGauche += VITESSE / 3.0f;
+                        baseDroite -= VITESSE / 3.0f; 
+                    }
+                    else {
+                        baseGauche += VITESSE / 5.0f;
+                        baseDroite -= VITESSE / 5.0f; 
+                    }*/
+                    baseGauche += (-0.055) * robotState.distanceTelemetreMelanchon + 8;
+                    baseDroite -= (-0.055) * robotState.distanceTelemetreMelanchon + 8;
                 }
-                else {
-                    baseGauche += VITESSE / 5.0f;
-                    baseDroite -= VITESSE / 5.0f; 
-                }*/
-                baseGauche += (-0.055) * robotState.distanceTelemetreMelanchon + 5;
-                baseDroite -= (-0.055) * robotState.distanceTelemetreMelanchon + 5;
             }
-            
-            if(robotState.distanceTelemetreGauche <= 40) {
+
+            if (robotState.distanceTelemetreGauche <= SEUILMOYTECO) {
                 isViteVite = 0;
-                /*if(robotState.distanceTelemetreGauche <= 25) {
-                    baseGauche += VITESSE / 3.0f;
-                    baseDroite -= VITESSE / 3.0f; 
+                if (robotState.distanceTelemetreGauche <= SEUILTECO) {
+                    isMoyenVite = 0;
+                    /*if(robotState.distanceTelemetreGauche <= 25) {
+                        baseGauche += VITESSE / 3.0f;
+                        baseDroite -= VITESSE / 3.0f; 
+                    }
+                    else {
+                        baseGauche += VITESSE / 5.0f;
+                        baseDroite -= VITESSE / 5.0f; 
+                    }*/
+                    baseGauche += (-0.075) * robotState.distanceTelemetreGauche + 5;
+                    baseDroite -= (-0.075) * robotState.distanceTelemetreGauche + 5;
                 }
-                else {
-                    baseGauche += VITESSE / 5.0f;
-                    baseDroite -= VITESSE / 5.0f; 
-                }*/
-                baseGauche += (-0.075) * robotState.distanceTelemetreGauche + 5;
-                baseDroite -= (-0.075) * robotState.distanceTelemetreGauche + 5;
             }
-            
-            if(robotState.distanceTelemetreCentre <= 30) {
+
+            if (robotState.distanceTelemetreCentre <= SEUILMOYCENTRE) {
                 isViteVite = 0;
-                /*if(robotState.distanceTelemetreCentre <= 18) {
-                    baseGauche -= VITESSE * 2.0f;
-                    baseDroite -= VITESSE * 2.0; 
+                if (robotState.distanceTelemetreCentre <= SEUILCENTRE) {
+                    isMoyenVite = 0;
+
+                    baseGauche -= (-1.25) * robotState.distanceTelemetreCentre + 42.5 + ((robotState.distanceTelemetreMelanchon + robotState.distanceTelemetreGauche) > (robotState.distanceTelemetreLePen + robotState.distanceTelemetreDroit) ? 10 : -10);
+                    baseDroite -= (-1.25) * robotState.distanceTelemetreCentre + 42.5 + ((robotState.distanceTelemetreMelanchon + robotState.distanceTelemetreGauche) > (robotState.distanceTelemetreLePen + robotState.distanceTelemetreDroit) ? -10 : 10);
                 }
-                else {
-                    baseGauche -= VITESSE * 0.5f;
-                    baseDroite -= VITESSE * 0.5f; 
-                }*/
-                baseGauche -= (-1.25) * robotState.distanceTelemetreCentre + 42.5 + ((robotState.distanceTelemetreMelanchon + robotState.distanceTelemetreGauche) > (robotState.distanceTelemetreLePen + robotState.distanceTelemetreDroit) ? 10 : -10);
-                baseDroite -= (-1.25) * robotState.distanceTelemetreCentre + 42.5 + ((robotState.distanceTelemetreMelanchon + robotState.distanceTelemetreGauche) > (robotState.distanceTelemetreLePen + robotState.distanceTelemetreDroit) ? -10 : 10);
-                
             }
-            
-            if(robotState.distanceTelemetreDroit <= 40) {
+
+            if (robotState.distanceTelemetreDroit <= SEUILMOYTECO) {
                 isViteVite = 0;
-                /*if(robotState.distanceTelemetreDroit <= 25) {
-                    baseGauche -= VITESSE / 3.0f;
-                    baseDroite += VITESSE / 3.0f; 
+                if (robotState.distanceTelemetreDroit <= SEUILTECO) {
+                    isMoyenVite = 0;
+                    /*if(robotState.distanceTelemetreDroit <= 25) {
+                        baseGauche -= VITESSE / 3.0f;
+                        baseDroite += VITESSE / 3.0f; 
+                    }
+                    else {
+                        baseGauche -= VITESSE / 5.0f;
+                        baseDroite += VITESSE / 5.0f; 
+                    }*/
+                    baseGauche -= (-0.075) * robotState.distanceTelemetreDroit + 5;
+                    baseDroite += (-0.075) * robotState.distanceTelemetreDroit + 5;
                 }
-                else {
-                    baseGauche -= VITESSE / 5.0f;
-                    baseDroite += VITESSE / 5.0f; 
-                }*/
-                baseGauche -= (-0.075) * robotState.distanceTelemetreDroit + 5;
-                baseDroite += (-0.075) * robotState.distanceTelemetreDroit + 5;
             }
-            
-            if(robotState.distanceTelemetreLePen <= 40) {
+            if (robotState.distanceTelemetreLePen <= SEUILMOYTECO) {
                 isViteVite = 0;
-                /*if(robotState.distanceTelemetreLePen <= 25) {
-                    baseGauche -= VITESSE / 3.0f;
-                    baseDroite += VITESSE / 3.0f; 
+                if (robotState.distanceTelemetreLePen <= SEUILTECO) {
+                    isMoyenVite = 0;
+                    /*if(robotState.distanceTelemetreLePen <= 25) {
+                        baseGauche -= VITESSE / 3.0f;
+                        baseDroite += VITESSE / 3.0f; 
+                    }
+                    else {
+                        baseGauche += VITESSE / 5.0f;
+                        baseDroite -= VITESSE / 5.0f; 
+                    }*/
+
+                    baseGauche -= (-0.055) * robotState.distanceTelemetreLePen + 8;
+                    baseDroite += (-0.055) * robotState.distanceTelemetreLePen + 8;
                 }
-                else {
-                    baseGauche += VITESSE / 5.0f;
-                    baseDroite -= VITESSE / 5.0f; 
-                }*/
-                
-                baseGauche -= (-0.055) * robotState.distanceTelemetreLePen + 5;
-                baseDroite += (-0.055) * robotState.distanceTelemetreLePen + 5;
             }
-            if(isViteVite) {
+
+            if (isViteVite) {
                 PWMSetSpeedConsigne(VITE_VITE, MOTEUR_GAUCHE);
                 PWMSetSpeedConsigne(VITE_VITE, MOTEUR_DROIT);
-            }
-            else {
-                PWMSetSpeedConsigne(baseGauche, MOTEUR_GAUCHE);
-                PWMSetSpeedConsigne(baseDroite, MOTEUR_DROIT);
+              LED_ORANGE = 1;
+                LED_BLANCHE = 1;
+               LED_BLEUE = 1;
+            } else {
+                LED_ORANGE = 0;
+                LED_BLANCHE = 0;
+                LED_BLEUE = 0;
+                if (isMoyenVite) {
+                    PWMSetSpeedConsigne(MOYEN_VITE, MOTEUR_GAUCHE);
+                    PWMSetSpeedConsigne(MOYEN_VITE, MOTEUR_DROIT);
+                    LED_ORANGE = 0;
+                    LED_BLANCHE = 0;
+
+                } else {
+                    LED_BLEUE = 1;
+                    PWMSetSpeedConsigne(baseGauche, MOTEUR_GAUCHE);
+                    PWMSetSpeedConsigne(baseDroite, MOTEUR_DROIT);
+                }
             }
             /*float uVect[3] = {robotState.distanceTelemetreMelanchon * 0.5f + robotState.distanceTelemetreGauche * 0.866f,
                 robotState.distanceTelemetreGauche * 0.866f + robotState.distanceTelemetreCentre + robotState.distanceTelemetreDroit * 0.866f,
                 robotState.distanceTelemetreDroit * 0.866f + robotState.distanceTelemetreLePen * 0.5f};
 
-            float vVect[3] = {robotState.distanceTelemetreMelanchon * -0.866f + robotState.distanceTelemetreGauche *-0.5f,
-                robotState.distanceTelemetreGauche * -0.5f + robotState.distanceTelemetreDroit * 0.5f,
-                robotState.distanceTelemetreDroit * 0.5f + robotState.distanceTelemetreLePen * 0.866f};
+                    float vVect[3] = {robotState.distanceTelemetreMelanchon * -0.866f + robotState.distanceTelemetreGauche *-0.5f,
+                        robotState.distanceTelemetreGauche * -0.5f + robotState.distanceTelemetreDroit * 0.5f,
+                        robotState.distanceTelemetreDroit * 0.5f + robotState.distanceTelemetreLePen * 0.866f};
 
-            // calcul de la norme
-            float normVect[3] = {sqrt(uVect[0] * uVect[0] + vVect[0] * vVect[0]),
-                sqrt(uVect[1] * uVect[1] + vVect[1] * vVect[1]),
-                sqrt(uVect[2] * uVect[2] + vVect[2] * vVect[2])};
+                    // calcul de la norme
+                    float normVect[3] = {sqrt(uVect[0] * uVect[0] + vVect[0] * vVect[0]),
+                        sqrt(uVect[1] * uVect[1] + vVect[1] * vVect[1]),
+                        sqrt(uVect[2] * uVect[2] + vVect[2] * vVect[2])};
 
-            // Choix du vecteur
-            uint8_t finalVect;
-            if (normVect[0] > normVect[1]) {
-                if (normVect[0] > normVect[2]) {
-                    finalVect = 0;
-                } else {
-                    finalVect = 2;
-                }
-            } else {
-                if (normVect[1] > normVect[2]) {
-                    finalVect = 1;
-                } else {
-                    finalVect = 2;
-                }
-            }
+                    // Choix du vecteur
+                    uint8_t finalVect;
+                    if (normVect[0] > normVect[1]) {
+                        if (normVect[0] > normVect[2]) {
+                            finalVect = 0;
+                        } else {
+                            finalVect = 2;
+                        }
+                    } else {
+                        if (normVect[1] > normVect[2]) {
+                            finalVect = 1;
+                        } else {
+                            finalVect = 2;
+                        }
+                    }
 
-            // Application à la commande
+                    // Application à la commande
 
-            int dir = (int) (180 / PI) * atan(vVect[finalVect] / uVect[finalVect]);
-            PWMSetSpeedConsigne(((dir * -VITESSE / 2.0f) / -60.0f) + VITESSE, MOTEUR_GAUCHE);
-            PWMSetSpeedConsigne(((dir * VITESSE / 2.0f) / -60.0f) + VITESSE, MOTEUR_DROIT);*/
+                    int dir = (int) (180 / PI) * atan(vVect[finalVect] / uVect[finalVect]);
+                    PWMSetSpeedConsigne(((dir * -VITESSE / 2.0f) / -60.0f) + VITESSE, MOTEUR_GAUCHE);
+                    PWMSetSpeedConsigne(((dir * VITESSE / 2.0f) / -60.0f) + VITESSE, MOTEUR_DROIT);*/
         }
     } // fin main
 

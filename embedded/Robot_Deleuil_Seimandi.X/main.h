@@ -24,8 +24,17 @@
 #define OBSTACLE_A_DROITE 2
 #define OBSTACLE_EN_FACE 3
 
-#define VITESSE 10
+#define VITESSE 8
 #define VITE_VITE 25
+#define MOYEN_VITE 17
+
+
+#define SEUILTECO 40
+#define SEUILCENTRE 30
+
+#define SEUILMOYTECO 60
+#define SEUILMOYCENTRE 50
+
 
 #define FCY 40000000
 
