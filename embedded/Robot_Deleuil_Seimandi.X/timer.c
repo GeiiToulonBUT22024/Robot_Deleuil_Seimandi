@@ -24,7 +24,6 @@ void InitTimer23(void) {
     IFS0bits.T3IF = 0; // Clear Timer3 Interrupt Flag
     IEC0bits.T3IE = 1; // Enable Timer3 interrupt
     T2CONbits.TON = 1; // Start 32-bit Timer
-    /* Example code for Timer3 ISR */
 }
 
 //Interruption du timer 32 bits sur 2-3
