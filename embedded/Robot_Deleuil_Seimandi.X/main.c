@@ -72,50 +72,91 @@ int main(void) {
             float baseGauche = VITESSE;
             float baseDroite = VITESSE;
             int isViteVite = 1;
-            if (robotState.distanceTelemetreMelanchon <= 40) {
-                isViteVite = 0;
+            int isMoyenVite = 1;
 
-                baseGauche += (-0.055) * robotState.distanceTelemetreMelanchon + 5;
-                baseDroite -= (-0.055) * robotState.distanceTelemetreMelanchon + 5;
+            if (robotState.distanceTelemetreMelanchon <= 60) {
+                isViteVite = 0;
+                if (robotState.distanceTelemetreMelanchon <= 40) {
+                    isMoyenVite = 0;
+                    if (robotState.distanceTelemetreMelanchon <= 10) {
+                        baseGauche += (-0.5481) * robotState.distanceTelemetreMelanchon + 5.556;
+                        baseDroite -= (-0.5481) * robotState.distanceTelemetreMelanchon + 5.556;
+                    } else {
+                        baseGauche += (-0.055) * robotState.distanceTelemetreMelanchon + 5;
+                        baseDroite -= (-0.055) * robotState.distanceTelemetreMelanchon + 5;
+                    }
+                }
             }
 
-            if (robotState.distanceTelemetreGauche <= 40) {
+            if (robotState.distanceTelemetreGauche <= 60) {
                 isViteVite = 0;
+                if (robotState.distanceTelemetreGauche <= 40) {
+                    isMoyenVite = 0;
 
-                baseGauche += (-0.075) * robotState.distanceTelemetreGauche + 5;
-                baseDroite -= (-0.075) * robotState.distanceTelemetreGauche + 5;
+                    baseGauche += (-0.075) * robotState.distanceTelemetreGauche + 5;
+                    baseDroite -= (-0.075) * robotState.distanceTelemetreGauche + 5;
+                }
             }
 
-            if (robotState.distanceTelemetreCentre <= 30) {
+            if (robotState.distanceTelemetreCentre <= 60) {
                 isViteVite = 0;
+                if (robotState.distanceTelemetreCentre <= 30) {
+                    isMoyenVite = 0;
 
-                baseGauche -= (-1.25) * robotState.distanceTelemetreCentre + 42.5 + ((robotState.distanceTelemetreMelanchon + robotState.distanceTelemetreGauche) > (robotState.distanceTelemetreLePen + robotState.distanceTelemetreDroit) ? 10 : -10);
-                baseDroite -= (-1.25) * robotState.distanceTelemetreCentre + 42.5 + ((robotState.distanceTelemetreMelanchon + robotState.distanceTelemetreGauche) > (robotState.distanceTelemetreLePen + robotState.distanceTelemetreDroit) ? -10 : 10);
+                    baseGauche -= (-1.25) * robotState.distanceTelemetreCentre + 42.5 + ((robotState.distanceTelemetreMelanchon + robotState.distanceTelemetreGauche) > (robotState.distanceTelemetreLePen + robotState.distanceTelemetreDroit) ? 10 : -10);
+                    baseDroite -= (-1.25) * robotState.distanceTelemetreCentre + 42.5 + ((robotState.distanceTelemetreMelanchon + robotState.distanceTelemetreGauche) > (robotState.distanceTelemetreLePen + robotState.distanceTelemetreDroit) ? -10 : 10);
 
+                }
             }
 
-            if (robotState.distanceTelemetreDroit <= 40) {
+            if (robotState.distanceTelemetreDroit <= 60) {
                 isViteVite = 0;
+                if (robotState.distanceTelemetreDroit <= 40) {
+                    isMoyenVite = 0;
 
-                baseGauche -= (-0.075) * robotState.distanceTelemetreDroit + 5;
-                baseDroite += (-0.075) * robotState.distanceTelemetreDroit + 5;
+                    baseGauche -= (-0.075) * robotState.distanceTelemetreDroit + 5;
+                    baseDroite += (-0.075) * robotState.distanceTelemetreDroit + 5;
+
+
+                }
             }
 
-            if (robotState.distanceTelemetreLePen <= 40) {
+            if (robotState.distanceTelemetreLePen <= 60) {
                 isViteVite = 0;
+                if (robotState.distanceTelemetreLePen <= 40) {
+                    isMoyenVite = 0;
+                    if (robotState.distanceTelemetreLePen <= 10) {
+                        baseGauche -= (-0.5481) * robotState.distanceTelemetreLePen + 5.556;
+                        baseDroite += (-0.5481) * robotState.distanceTelemetreLePen + 5.556;
+                    } else {
+                        baseGauche -= (-0.055) * robotState.distanceTelemetreLePen + 5;
+                        baseDroite += (-0.055) * robotState.distanceTelemetreLePen + 5;
+                    }
 
-                baseGauche -= (-0.055) * robotState.distanceTelemetreLePen + 5;
-                baseDroite += (-0.055) * robotState.distanceTelemetreLePen + 5;
+                }
             }
             if (isViteVite) {
                 PWMSetSpeedConsigne(VITE_VITE, MOTEUR_GAUCHE);
                 PWMSetSpeedConsigne(VITE_VITE, MOTEUR_DROIT);
 
+                // LED_ORANGE = 1;
+                // LED_BLEUE = 1;
+                // LED_BLANCHE = 1;
+                LED_ORANGE = 0;
+                LED_BLEUE = 0;
+                LED_BLANCHE = 0;
+
+            }
+            else if (isMoyenVite) {
+                PWMSetSpeedConsigne(MOYEN_VITE, MOTEUR_GAUCHE);
+                PWMSetSpeedConsigne(MOYEN_VITE, MOTEUR_DROIT);
+
                 LED_ORANGE = 1;
-                LED_BLEUE = 1;
+                LED_BLEUE = 0;
                 LED_BLANCHE = 1;
-                
-            } else {
+
+            }
+            else {
                 PWMSetSpeedConsigne(baseGauche, MOTEUR_GAUCHE);
                 PWMSetSpeedConsigne(baseDroite, MOTEUR_DROIT);
 

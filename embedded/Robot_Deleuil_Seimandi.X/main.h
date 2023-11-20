@@ -4,6 +4,8 @@
 
 #define VITESSE 10
 #define VITE_VITE 25
+#define MOYEN_VITE 15
+
 
 #define FCY 40000000
 
