@@ -58,7 +58,9 @@ namespace robotInterface
             while(robot.byteListReceived.Count != 0)
             {
                 byte current = robot.byteListReceived.Dequeue();
-                textBoxReception.Text += current.ToString("X2") + " ";
+                /*textBoxReception.Text += current.ToString("X2") + " ";*/
+
+                textBoxReception.Text += Convert.ToChar(current).ToString();
             }
         }
 

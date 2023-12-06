@@ -3,7 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Robot_Deleuil_Seimandi-led/embedded/Robot_Deleuil_Seimandi.X/main.c</file>
+            <file>file:/C:/Github/Robot_Deleuil_Seimandi/embedded/Robot_Deleuil_Seimandi.X/UART.c</file>
+            <file>file:/C:/Github/Robot_Deleuil_Seimandi/embedded/Robot_Deleuil_Seimandi.X/main.h</file>
+            <file>file:/C:/Github/Robot_Deleuil_Seimandi/embedded/Robot_Deleuil_Seimandi.X/UART.h</file>
+            <file>file:/C:/Github/Robot_Deleuil_Seimandi/embedded/Robot_Deleuil_Seimandi.X/ADC.h</file>
+            <file>file:/C:/Github/Robot_Deleuil_Seimandi/embedded/Robot_Deleuil_Seimandi.X/CB_TX1.c</file>
+            <file>file:/C:/Github/Robot_Deleuil_Seimandi/embedded/Robot_Deleuil_Seimandi.X/timer.c</file>
+            <file>file:/C:/Github/Robot_Deleuil_Seimandi/embedded/Robot_Deleuil_Seimandi.X/main.c</file>
         </group>
     </open-files>
 </project-private>

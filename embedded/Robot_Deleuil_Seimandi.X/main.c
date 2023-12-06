@@ -12,6 +12,8 @@
 #include "main.h"
 #include "Toolbox.h"
 #include "UART.h"
+#include "CB_TX1.h"
+
 
 extern unsigned long timestamp;
 
@@ -45,9 +47,10 @@ int main(void) {
     // Boucle Principale
     /****************************************************************************************************/
     while (1) {
-        if (ADCIsConversionFinished()) {
-            ADCClearConversionFinishedFlag();
-        }
+        /* UART */
+        SendMessageDirect((unsigned char*) "Bonjour", 7);
+        __delay32(40000000);
+
 
         if (ADCIsConversionFinished() == 1) {
             ADCClearConversionFinishedFlag();
@@ -118,16 +121,16 @@ int main(void) {
                 }
             }
             if (isViteVite) {
-                PWMSetSpeedConsigne(VITE_VITE, MOTEUR_GAUCHE);
-                PWMSetSpeedConsigne(VITE_VITE, MOTEUR_DROIT);
+                //PWMSetSpeedConsigne(VITE_VITE, MOTEUR_GAUCHE);
+                //PWMSetSpeedConsigne(VITE_VITE, MOTEUR_DROIT);
 
                 LED_ORANGE = 1;
                 LED_BLEUE = 1;
                 LED_BLANCHE = 1;
 
             } else {
-                PWMSetSpeedConsigne(baseGauche, MOTEUR_GAUCHE);
-                PWMSetSpeedConsigne(baseDroite, MOTEUR_DROIT);
+                //PWMSetSpeedConsigne(baseGauche, MOTEUR_GAUCHE);
+                //PWMSetSpeedConsigne(baseDroite, MOTEUR_DROIT);
 
                 LED_ORANGE = 0;
                 LED_BLEUE = 0;
@@ -167,6 +170,9 @@ int main(void) {
             int dir = (int) (180 / PI) * atan(vVect[finalVect] / uVect[finalVect]);
             PWMSetSpeedConsigne(((dir * -VITESSE / 2.0f) / -60.0f) + VITESSE, MOTEUR_GAUCHE);
             PWMSetSpeedConsigne(((dir * VITESSE / 2.0f) / -60.0f) + VITESSE, MOTEUR_DROIT);*/
+
+
+
         }
     } // fin main
 
