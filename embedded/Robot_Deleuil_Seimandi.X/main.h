@@ -2,11 +2,12 @@
 #ifndef MAIN_H
 #define	MAIN_H
 
-#define VITESSE 10
-#define VITE_VITE 25
-#define MOYEN_VITE 15
-
-
+#define VITESSE 17
+#define VITE_VITE 24
+/*
+#define VITESSE 11
+#define VITE_VITE 24
+*/
 #define FCY 40000000
 
 
