@@ -69,7 +69,7 @@ unsigned char CB_TX1_IsTranmitting(void)
 
 int CB_TX1_GetDataSize(void)
 {
-    // pour retourner la taille des donnÃ©es stockÃ©es (calcul distance tÃªte-queue/ +128 pour valeur tjrs positive)
+    // pour retourner la taille des données stockées (calcul distance tête-queue/ +128 pour valeur tjrs positive)
     int dataSize = (cbTx1Tail - cbTx1Head + CBTX1_BUFFER_SIZE ) % CBTX1_BUFFER_SIZE;
     return dataSize;
 }
@@ -77,6 +77,6 @@ int CB_TX1_GetDataSize(void)
 int CB_TX1_GetRemainingSize(void)
 {
     // pour retourner la taille restante du buffer
-    int remainingSize = (CBTX1_BUFFER_SIZE - 1) - CB_TX1_GetDataSize(); // -1 pour diffÃ©rentier la case vide de la case pleine
+    int remainingSize = (CBTX1_BUFFER_SIZE - 1) - CB_TX1_GetDataSize(); // -1 pour différentier la case vide de la case pleine
     return remainingSize;
 }
