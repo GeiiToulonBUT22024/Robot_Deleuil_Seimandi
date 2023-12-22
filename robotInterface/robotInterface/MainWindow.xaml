@@ -21,14 +21,45 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="30"/>
         </Grid.ColumnDefinitions>
+
+        <!-- Emission & Reception -->
         <GroupBox Header="Emission" Background="#FFDDDDDD" BorderBrush="Black" Grid.Column="1" Grid.Row="1">
             <TextBox x:Name="textBoxEmission" TextWrapping="Wrap" Text="" Background="{x:Null}" AcceptsReturn="True" BorderBrush="{x:Null}" KeyUp="textBoxEmission_KeyUp"/>
         </GroupBox>
         <GroupBox Header="Réception" Background="#FFDDDDDD" BorderBrush="Black" Grid.Column="3" Grid.Row="1">
             <TextBox x:Name="textBoxReception" TextWrapping="Wrap" Text="" Background="{x:Null}" AcceptsReturn="True" IsReadOnly="True" BorderBrush="{x:Null}" AcceptsTab="True" SelectionBrush="{x:Null}" SelectionTextBrush="{x:Null}"/>
         </GroupBox>
-        <Button x:Name="btnEnvoyer" Grid.Column="1" Content="Envoyer" Grid.Row="3" HorizontalAlignment="Center" Width="100" Click="btnEnvoyer_Click"/>
+        
+        <!-- Leds -->
+        <GroupBox Header="Leds" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2">
+            <StackPanel>
+                <CheckBox x:Name="led1" Content="Led1" IsChecked="True"/>
+                <CheckBox x:Name="led2" Content="Led2"/>
+                <CheckBox x:Name="led3" Content="Led3"/>
+            </StackPanel>
+        </GroupBox>
 
+        <!-- Télémètres -->
+        <GroupBox Header="Télémètres IR" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2">
+            <StackPanel>
+                <Label Content="IR Gauche: 40 cm"/>
+                <Label Content="IR Centre: 60 cm"/>
+                <Label Content="IR Droit: 65 cm"/>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- Moteurs -->
+        <GroupBox Header="Moteurs" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2">
+            <StackPanel>
+                <Label Content="Vitesse Gauche: 55%"/>
+                <Slider Minimum="0" Maximum="100" Value="55"/>
+                <Label Content="Vitesse Droite: 15%"/>
+                <Slider Minimum="0" Maximum="100" Value="15"/>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- Buttons -->
+        <Button x:Name="btnEnvoyer" Grid.Column="1" Content="Envoyer" Grid.Row="3" HorizontalAlignment="Center" Width="100" Click="btnEnvoyer_Click"/>
         <Button x:Name="btnClear" Grid.Column="3" Content="Clear" Grid.Row="3" HorizontalAlignment="Center" Width="100" Click="btnClear_Click"/>
         <Button x:Name="btnTest" Grid.Column="2" Content="Test" Grid.Row="3" HorizontalAlignment="Center" Width="100" Click="btnTest_Click" Margin="0,1,0,29" Grid.RowSpan="2"/>
     </Grid>
