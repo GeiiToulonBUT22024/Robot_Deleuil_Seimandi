@@ -5,14 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:robotInterface"
         mc:Ignorable="d"
-        Title="Robot Interface" Height="450" Width="800" KeyUp="Window_KeyUp">
+        Title="Robot Interface" Height="878" Width="1280" KeyUp="Window_KeyUp">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
-            <RowDefinition/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="461*"/>
+            <RowDefinition Height="79*"/>
+            <RowDefinition Height="55"/>
+            <RowDefinition Height="132.988"/>
+            <RowDefinition Height="29.338"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="40.662"/>
+            <RowDefinition Height="31.038"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="30"/>
@@ -20,6 +24,7 @@
             <ColumnDefinition Width="30"/>
             <ColumnDefinition/>
             <ColumnDefinition Width="30"/>
+
         </Grid.ColumnDefinitions>
 
         <!-- Emission & Reception -->
@@ -29,38 +34,36 @@
         <GroupBox Header="Réception" Background="#FFDDDDDD" BorderBrush="Black" Grid.Column="3" Grid.Row="1">
             <TextBox x:Name="textBoxReception" TextWrapping="Wrap" Text="" Background="{x:Null}" AcceptsReturn="True" IsReadOnly="True" BorderBrush="{x:Null}" AcceptsTab="True" SelectionBrush="{x:Null}" SelectionTextBrush="{x:Null}"/>
         </GroupBox>
-        
+
         <!-- Leds -->
-        <GroupBox Header="Leds" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2">
-            <StackPanel>
-                <CheckBox x:Name="led1" Content="Led1" IsChecked="True"/>
-                <CheckBox x:Name="led2" Content="Led2"/>
-                <CheckBox x:Name="led3" Content="Led3"/>
+        <GroupBox Header="Leds" Grid.Column="1" Grid.Row="4" Margin="37,16,399,2">
+            <StackPanel Height="148" Margin="0,0,25,0">
+                <CheckBox x:Name="checkBoxLed1" Content="Led1" Checked="led_CheckedUnchecked" Unchecked="led_CheckedUnchecked"/>
+                <CheckBox x:Name="checkBoxLed2" Content="Led2" Checked="led_CheckedUnchecked" Unchecked="led_CheckedUnchecked"/>
+                <CheckBox x:Name="checkBoxLed3" Content="Led3" Checked="led_CheckedUnchecked" Unchecked="led_CheckedUnchecked"/>
             </StackPanel>
         </GroupBox>
 
         <!-- Télémètres -->
-        <GroupBox Header="Télémètres IR" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2">
+        <GroupBox Header="Télémètres IR" Grid.Column="1" Grid.Row="4" Margin="259,13,158,28" Grid.RowSpan="2">
             <StackPanel>
-                <Label Content="IR Gauche: 40 cm"/>
-                <Label Content="IR Centre: 60 cm"/>
-                <Label Content="IR Droit: 65 cm"/>
+                <Label x:Name="label_IRGauche"  Content="IR Gauche: {value} cm"/>
+                <Label x:Name="label_IRCentre" Content="IR Centre: {value} cm"/>
+                <Label x:Name="label_IRDroit" Content="IR Droit: {value} cm" Height="68" Width="175"/>
             </StackPanel>
         </GroupBox>
 
         <!-- Moteurs -->
-        <GroupBox Header="Moteurs" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2">
+        <GroupBox Header="Moteurs" Grid.Column="1" Grid.Row="4" Margin="527,21,415,15" Grid.ColumnSpan="3">
             <StackPanel>
-                <Label Content="Vitesse Gauche: 55%"/>
-                <Slider Minimum="0" Maximum="100" Value="55"/>
-                <Label Content="Vitesse Droite: 15%"/>
-                <Slider Minimum="0" Maximum="100" Value="15"/>
+                <Label x:Name="label_CONGauche" Content="Vitesse Gauche: {value}%"/>
+                <Label x:Name="label_CONDroit" Content="Vitesse Droite: {value}%"/>
             </StackPanel>
         </GroupBox>
 
         <!-- Buttons -->
-        <Button x:Name="btnEnvoyer" Grid.Column="1" Content="Envoyer" Grid.Row="3" HorizontalAlignment="Center" Width="100" Click="btnEnvoyer_Click"/>
-        <Button x:Name="btnClear" Grid.Column="3" Content="Clear" Grid.Row="3" HorizontalAlignment="Center" Width="100" Click="btnClear_Click"/>
-        <Button x:Name="btnTest" Grid.Column="2" Content="Test" Grid.Row="3" HorizontalAlignment="Center" Width="100" Click="btnTest_Click" Margin="0,1,0,29" Grid.RowSpan="2"/>
+        <Button x:Name="btnEnvoyer" Grid.Column="3" Content="Envoyer" Grid.Row="2" HorizontalAlignment="Left" Width="100" Click="btnEnvoyer_Click" Margin="139,25,0,1"/>
+        <Button x:Name="btnClear" Grid.Column="3" Content="Clear" Grid.Row="2" HorizontalAlignment="Left" Width="100" Click="btnClear_Click" Margin="395,24,0,1"/>
+        <Button x:Name="btnTest" Grid.Column="3" Content="Test" Grid.Row="2" HorizontalAlignment="Left" Width="100" Click="btnTest_Click" Margin="266,24,0,0"/>
     </Grid>
 </Window>

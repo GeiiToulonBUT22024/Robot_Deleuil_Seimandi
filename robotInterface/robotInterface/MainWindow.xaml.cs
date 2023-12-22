@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 using ExtendedSerialPort;
 using System.IO.Ports;
 using System.Windows.Threading;
-
+using System.Diagnostics;
 
 namespace robotInterface
 {
@@ -59,12 +59,18 @@ namespace robotInterface
                 textBoxReception.Text += robot.receivedText;
                 robot.receivedText = "";
             }*/
-            while(robot.stringListReceived.Count != 0)
+            label_IRGauche.Content = "IR Gauche: {value} cm".Replace("{value}", robot.distanceTelemetreGauche.ToString());
+            label_IRCentre.Content = "IR Centre: {value} cm".Replace("{value}", robot.distanceTelemetreCentre.ToString());
+            label_IRDroit.Content = "IR Droit: {value} cm".Replace("{value}", robot.distanceTelemetreDroit.ToString());
+
+            label_CONDroit.Content = "Vitesse Droite: {value}%".Replace("{value}", robot.consigneDroite.ToString());
+            label_CONGauche.Content = "Vitesse Gauche: {value}%".Replace("{value}", robot.consigneGauche.ToString());
+
+            while (robot.stringListReceived.Count != 0)
             {
                 // byte current = robot.byteListReceived.Dequeue();
                 textBoxReception.Text += robot.stringListReceived.Dequeue();
-
-               /* textBoxReception.Text += Convert.ToChar(current).ToString();*/
+                /* textBoxReception.Text += Convert.ToChar(current).ToString();*/
             }
         }
 
@@ -166,11 +172,33 @@ namespace robotInterface
                 byteList[i]= (byte) (2*i);
             
             serialPort1.Write(byteList, 0, 20);*/
+            serialPort1.Write(UARTProtocol.UartEncode((int)SerialProtocolManager.CommandID.TEXT, 7, Encoding.ASCII.GetBytes("Bonjour")), 0, 13);
+        }
 
-            serialPort1.Write(UARTProtocol.UartEncode(0x0080, 7, Encoding.ASCII.GetBytes("Bonjour")), 0, 13);
-          //  serialPort1.Write(UARTProtocol.UartEncode(0x0020, 7, ), 0, 13);
-           // serialPort1.Write(UARTProtocol.UartEncode(0x0030, 7, Encoding.ASCII.GetBytes("Bonjour")), 0, 13);
-            //serialPort1.Write(UARTProtocol.UartEncode(0x0040, 7, Encoding.ASCII.GetBytes("Bonjour")), 0, 13);
+        private void led_CheckedUnchecked(object sender, RoutedEventArgs e)
+        {
+            var ckb = (CheckBox)sender;
+            byte numeroLed = 0;
+            var etat = Convert.ToByte(ckb.IsChecked??false);
+
+            switch(ckb.Name)
+            {
+                case "checkBoxLed1":
+                    numeroLed = 0;
+                    break;
+
+                case "checkBoxLed2":
+                    numeroLed = 1;
+                    break;
+
+                case "checkBoxLed3":
+                    numeroLed = 2;
+                    break;
+            }
+            byte[] payload = {numeroLed, etat};
+            Debug.WriteLine(payload[0].ToString());
+            Debug.WriteLine(payload[1].ToString());
+            serialPort1.Write(UARTProtocol.UartEncode((int)SerialProtocolManager.CommandID.LED, 2, payload), 0, 8);
         }
 
     }

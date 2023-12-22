@@ -7,6 +7,7 @@ int cbRx1Head;
 int cbRx1Tail;
 unsigned char cbRx1Buffer[CBRX1_BUFFER_SIZE];
 
+
 void CB_RX1_Add(unsigned char value) {
     if (CB_RX1_GetRemainingSize() > 0) {
         if ((cbRx1Tail + 1) % CBRX1_BUFFER_SIZE != cbRx1Head) {

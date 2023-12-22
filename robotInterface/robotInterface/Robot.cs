@@ -14,8 +14,18 @@ namespace robotInterface
         public float distanceTelemetreCentre;
         public float distanceTelemetreGauche;
         public float distanceTelemetreMelenchon;
+
+        public int consigneGauche;
+        public int consigneDroite;
+
+        public byte ledBlanche;
+        public byte ledBleue;
+        public byte ledOrange;
+
         // public Queue<byte> byteListReceived = new Queue<byte>();
         public Queue<string> stringListReceived = new Queue<string>();
+
+
         public Robot()
         {
 

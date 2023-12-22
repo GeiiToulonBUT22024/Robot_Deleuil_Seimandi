@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Diagnostics;
 
 namespace robotInterface
 {
@@ -51,12 +52,28 @@ namespace robotInterface
                     break;
 
                 case (int)CommandID.LED:
+                    if (msgPayload[0] == 0x00)
+                    {
+                        this.robot.ledBlanche = msgPayload[1];
+                    }
+                    else if (msgPayload[0] == 0x01)
+                    {
+                        this.robot.ledBleue = msgPayload[1];
+                    }
+                    else if (msgPayload[0] == 0x10) {
+                        this.robot.ledOrange = msgPayload[1];
+                    }
                     break;
 
                 case (int)CommandID.TELEMETRE_IR:
+                    this.robot.distanceTelemetreGauche = msgPayload[0];
+                    this.robot.distanceTelemetreCentre = msgPayload[1];
+                    this.robot.distanceTelemetreDroit = msgPayload[2];
                     break;
 
                 case (int)CommandID.CONSIGNE_VITESSE:
+                    this.robot.consigneGauche = (msgPayload[0] > 127 ? msgPayload[0]-256 : msgPayload[0]);
+                    this.robot.consigneDroite = (msgPayload[1] > 127 ? msgPayload[1] - 256 : msgPayload[1]);
                     break;
 
             }
@@ -68,6 +85,9 @@ namespace robotInterface
             {
                 case StateReception.Waiting:
                     if (c == 0xFE) rcvState = StateReception.FunctionMSB;
+                    msgDecodedPayloadLength = 0;
+                    msgDecodedPayloadIndex = 0;
+                    msgDecodedFunction = 0;
                     break;
 
                 case StateReception.FunctionMSB:
@@ -100,8 +120,9 @@ namespace robotInterface
 
                 case StateReception.CheckSum:
                 
-                    if (CalculateChecksum(msgDecodedFunction, msgDecodedPayloadLength, msgDecodedPayload) == c) {
-                        MessageBox.Show("Success ID : " + msgDecodedFunction.ToString("X2") + " : " + Encoding.Default.GetString(msgDecodedPayload));
+                    if (CalculateChecksum(msgDecodedFunction, msgDecodedPayloadLength, msgDecodedPayload) == c) 
+                    {                        
+                        // Debug.WriteLine("Success ID : " + msgDecodedFunction.ToString("X2") + " : " + msgDecodedPayload[0].ToString() + msgDecodedPayload[1].ToString());
                         ProcessDecodedMessage(msgDecodedFunction, msgDecodedPayloadLength, msgDecodedPayload);
                     }
                     rcvState = StateReception.Waiting;

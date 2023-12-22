@@ -4,6 +4,7 @@
 #include "PWM.h"
 #include "Robot.h"
 #include "ToolBox.h"
+#include "UART_Protocol.h"
 
 #define PWMPER 40.0
 
@@ -65,6 +66,7 @@ void InitPWM(void) {
 void PWMSetSpeedConsigne(float consigne, char moteur) {
     if (moteur == MOTEUR_GAUCHE) robotState.vitesseDroiteConsigne = consigne * COEF_D;
     else if (moteur == MOTEUR_DROIT) robotState.vitesseGaucheConsigne = consigne;
+    
 }
 
 void PWMUpdateSpeed() {

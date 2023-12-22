@@ -12,5 +12,6 @@ int CB_RX1_GetDataSize(void);
 int CB_RX1_GetRemainingSize(void);
 
 
+
 #endif	/* CB_RX1_H */
 
