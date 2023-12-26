@@ -111,8 +111,8 @@ namespace robotInterface
                 payload[i] = (byte)textBoxEmission.Text[i];
 
 
-
-            serialPort1.SendMessage(this,payload);
+            // a décommmenterrrr
+          //  serialPort1.SendMessage(this,payload);
             textBoxEmission.Text = "";
             return true;
         }
@@ -172,33 +172,38 @@ namespace robotInterface
                 byteList[i]= (byte) (2*i);
             
             serialPort1.Write(byteList, 0, 20);*/
-            serialPort1.Write(UARTProtocol.UartEncode((int)SerialProtocolManager.CommandID.TEXT, 7, Encoding.ASCII.GetBytes("Bonjour")), 0, 13);
+         ////   serialPort1.Write(UARTProtocol.UartEncode((int)SerialProtocolManager.CommandID.TEXT, 7, Encoding.ASCII.GetBytes("Bonjour")), 0, 13);
         }
 
         private void led_CheckedUnchecked(object sender, RoutedEventArgs e)
         {
             var ckb = (CheckBox)sender;
             byte numeroLed = 0;
-            var etat = Convert.ToByte(ckb.IsChecked??false);
+            var etat = Convert.ToByte(ckb.IsChecked ?? false);
 
-            switch(ckb.Name)
+            switch (ckb.Name)
             {
                 case "checkBoxLed1":
                     numeroLed = 0;
+                    ckb.Foreground = etat == 1 ? new SolidColorBrush(Colors.LightGray) : new SolidColorBrush(Colors.Black);
                     break;
 
                 case "checkBoxLed2":
                     numeroLed = 1;
+                    ckb.Foreground = etat == 1 ? new SolidColorBrush(Colors.Blue) : new SolidColorBrush(Colors.Black);
                     break;
 
                 case "checkBoxLed3":
                     numeroLed = 2;
+                    ckb.Foreground = etat == 1 ? new SolidColorBrush(Colors.Orange) : new SolidColorBrush(Colors.Black);
                     break;
             }
-            byte[] payload = {numeroLed, etat};
+            byte[] payload = { numeroLed, etat };
             Debug.WriteLine(payload[0].ToString());
             Debug.WriteLine(payload[1].ToString());
-            serialPort1.Write(UARTProtocol.UartEncode((int)SerialProtocolManager.CommandID.LED, 2, payload), 0, 8);
+
+            // a decommentater
+            // serialPort1.Write(UARTProtocol.UartEncode((int)SerialProtocolManager.CommandID.LED, 2, payload), 0, 8);
         }
 
     }
