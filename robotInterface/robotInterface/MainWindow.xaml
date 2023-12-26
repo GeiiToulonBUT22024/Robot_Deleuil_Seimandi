@@ -24,7 +24,6 @@
             <ColumnDefinition Width="30"/>
             <ColumnDefinition/>
             <ColumnDefinition Width="30"/>
-
         </Grid.ColumnDefinitions>
 
         <!-- Emission & Reception -->
@@ -45,11 +44,13 @@
         </GroupBox>
 
         <!-- Télémètres -->
-        <GroupBox Header="Télémètres IR" Grid.Column="1" Grid.Row="4" Margin="259,13,158,28" Grid.RowSpan="2">
-            <StackPanel>
+        <GroupBox Header="Télémètres IR" Grid.Column="1" Grid.Row="3" Margin="257,14,160,0" Grid.RowSpan="2">
+            <StackPanel Height="142">
+                <Label x:Name="label_IRExtremeGauche"  Content="IR Extreme Gauche: {value} cm"/>
                 <Label x:Name="label_IRGauche"  Content="IR Gauche: {value} cm"/>
                 <Label x:Name="label_IRCentre" Content="IR Centre: {value} cm"/>
-                <Label x:Name="label_IRDroit" Content="IR Droit: {value} cm" Height="68" Width="175"/>
+                <Label x:Name="label_IRDroit" Content="IR Droit: {value} cm"/>
+                <Label x:Name="label_IRExtremeDroit" Content="IR Extreme Droit: {value} cm"/>
             </StackPanel>
         </GroupBox>
 
