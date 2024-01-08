@@ -5,10 +5,13 @@
         <group>
             <file>file:/C:/Github/Robot_Deleuil_Seimandi/embedded/Robot_Deleuil_Seimandi.X/main.c</file>
             <file>file:/C:/Github/Robot_Deleuil_Seimandi/embedded/Robot_Deleuil_Seimandi.X/CB_RX1.c</file>
-            <file>file:/C:/Github/Robot_Deleuil_Seimandi/embedded/Robot_Deleuil_Seimandi.X/CB_RX1.h</file>
             <file>file:/C:/Github/Robot_Deleuil_Seimandi/embedded/Robot_Deleuil_Seimandi.X/CB_TX1.h</file>
             <file>file:/C:/Github/Robot_Deleuil_Seimandi/embedded/Robot_Deleuil_Seimandi.X/CB_TX1.c</file>
-            <file>file:/C:/Github/Robot_Deleuil_Seimandi/embedded/Robot_Deleuil_Seimandi.X/timer.c</file>
+            <file>file:/C:/Github/Robot_Deleuil_Seimandi/embedded/Robot_Deleuil_Seimandi.X/PWM.c</file>
+            <file>file:/C:/Github/Robot_Deleuil_Seimandi/embedded/Robot_Deleuil_Seimandi.X/CB_RX1.h</file>
+            <file>file:/C:/Github/Robot_Deleuil_Seimandi/embedded/Robot_Deleuil_Seimandi.X/UART_Protocol.c</file>
+            <file>file:/C:/Github/Robot_Deleuil_Seimandi/embedded/Robot_Deleuil_Seimandi.X/IO.h</file>
+            <file>file:/C:/Github/Robot_Deleuil_Seimandi/embedded/Robot_Deleuil_Seimandi.X/UART_Protocol.h</file>
         </group>
     </open-files>
 </project-private>

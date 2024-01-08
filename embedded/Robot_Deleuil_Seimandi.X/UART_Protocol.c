@@ -23,14 +23,14 @@ unsigned char UartCalculateChecksum(int msgFunction, int msgPayloadLength, unsig
 
 void UartEncodeAndSendMessage(int msgFunction, int msgPayloadLength, unsigned char* msgPayload) {
     //Fonction d?encodage et d?envoi d?un message
-    unsigned char msg[msgPayloadLength+6];
-    int pos=0;
-    
+    unsigned char msg[msgPayloadLength + 6];
+    int pos = 0;
+
     msg[pos++] = 0xFE;
-    msg[pos++] = (unsigned char)(msgFunction >> 8);
-    msg[pos++] = (unsigned char)(msgFunction >> 0);    
-    msg[pos++] = (unsigned char)(msgPayloadLength >> 8);
-    msg[pos++] = (unsigned char)(msgPayloadLength >> 0);
+    msg[pos++] = (unsigned char) (msgFunction >> 8);
+    msg[pos++] = (unsigned char) (msgFunction >> 0);
+    msg[pos++] = (unsigned char) (msgPayloadLength >> 8);
+    msg[pos++] = (unsigned char) (msgPayloadLength >> 0);
 
     for (int i = 0; i < msgPayloadLength; i++) {
         msg[pos++] = msgPayload[i];
@@ -108,7 +108,13 @@ void UartProcessDecodedMessage(int function, int payloadLength, unsigned char* p
                 LED_ORANGE = payload[1];
             }
             break;
+        case (int) CMD_ID_STATE:
 
+            break;
+
+        case (int) CMD_ID_AUTO_MANUAL:
+            robotState.autoModeActivated = payload[0];
+            break;
         case (int) CMD_ID_TEXT:
         case (int) CMD_ID_TELEMETRE_IR:
         case (int) CMD_ID_CONSIGNE_VITESSE:
