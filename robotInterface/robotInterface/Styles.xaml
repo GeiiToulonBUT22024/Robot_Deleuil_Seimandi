@@ -1,0 +1,23 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="RedBrush" Color="Red"/>
+    <SolidColorBrush x:Key="WhiteBrush" Color="White"/>
+    <SolidColorBrush x:Key="BlackBrush" Color="Black"/>
+
+    <Style TargetType="GroupBox">
+        <Setter Property="Background" Value="{StaticResource RedBrush}"/>
+    </Style>
+
+    <Style TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource BlackBrush}"/>
+    </Style>
+    
+
+
+    <Style TargetType="Button">
+        <Setter Property="Background" Value="Navy"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="Margin" Value="5"/>
+    </Style>
+</ResourceDictionary>

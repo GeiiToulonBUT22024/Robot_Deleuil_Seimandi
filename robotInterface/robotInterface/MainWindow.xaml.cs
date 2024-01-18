@@ -38,11 +38,7 @@ namespace robotInterface
         {
             InitializeComponent();
             InitializeSerialPort();
-
-            btnEnvoyer.Background = Brushes.Beige;
-            btnClear.Background = Brushes.Beige;
-
-
+            InitializeLedStates();
 
             timerDisplay = new DispatcherTimer();
             timerDisplay.Interval = new TimeSpan(0, 0, 0, 0, 100);
@@ -50,6 +46,10 @@ namespace robotInterface
             timerDisplay.Start();
 
             UARTProtocol.setRobot(robot);
+            this.WindowStyle = WindowStyle.None;
+            this.ResizeMode = ResizeMode.NoResize;
+            this.WindowState = WindowState.Maximized;
+
         }
 
         private void TimerDisplay_Tick(object? sender, EventArgs e)
@@ -113,7 +113,7 @@ namespace robotInterface
                 payload[i] = (byte)textBoxEmission.Text[i];
 
 
-            // a décommmenterrrr
+                                                                                         // A décommmenter en vrai
           //  serialPort1.SendMessage(this,payload);
             textBoxEmission.Text = "";
             return true;
@@ -123,11 +123,11 @@ namespace robotInterface
         {
             if (btnClickFlag)
             {
-                btnEnvoyer.Background = Brushes.RoyalBlue;
+              //  btnEnvoyer.Background = Brushes.RoyalBlue;
             }
             else
             {
-                btnEnvoyer.Background = Brushes.Beige;
+             //   btnEnvoyer.Background = Brushes.Beige;
             }
             btnClickFlag = !btnClickFlag;
 
@@ -136,13 +136,14 @@ namespace robotInterface
 
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
+            
             if (btnClickFlagClear)
             {
-                btnClear.Background = Brushes.RoyalBlue;
+               // btnClear.Background = Brushes.RoyalBlue;
             }
             else
             {
-                btnClear.Background = Brushes.Beige;
+               // btnClear.Background = Brushes.Beige;
             }
             btnClickFlagClear = !btnClickFlagClear;
 
@@ -176,37 +177,113 @@ namespace robotInterface
             serialPort1.Write(byteList, 0, 20);*/
          ////   serialPort1.Write(UARTProtocol.UartEncode((int)SerialProtocolManager.CommandID.TEXT, 7, Encoding.ASCII.GetBytes("Bonjour")), 0, 13);
         }
-
-        private void led_CheckedUnchecked(object sender, RoutedEventArgs e)
+        private void EllipseLed_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var ckb = (CheckBox)sender;
-            byte numeroLed = 0;
-            var etat = Convert.ToByte(ckb.IsChecked ?? false);
-
-            switch (ckb.Name)
+            var ellipse = sender as Ellipse;
+            if (ellipse != null)
             {
-                case "checkBoxLed1":
-                    numeroLed = 0;
-                    ckb.Foreground = etat == 1 ? new SolidColorBrush(Colors.LightGray) : new SolidColorBrush(Colors.Black);
-                    break;
+                byte numeroLed = Convert.ToByte(ellipse.Tag);
+                bool isLedOn = ellipse.Fill.ToString() == Brushes.Black.ToString(); 
 
-                case "checkBoxLed2":
-                    numeroLed = 1;
-                    ckb.Foreground = etat == 1 ? new SolidColorBrush(Colors.Blue) : new SolidColorBrush(Colors.Black);
-                    break;
+                ToggleLed(ellipse, numeroLed, !isLedOn);
+            }
+        }
 
-                case "checkBoxLed3":
-                    numeroLed = 2;
-                    ckb.Foreground = etat == 1 ? new SolidColorBrush(Colors.Orange) : new SolidColorBrush(Colors.Black);
+        private void ToggleLed(Ellipse ellipse, byte numeroLed, bool isLedOn)
+        {
+            var etat = Convert.ToByte(isLedOn);
+            SolidColorBrush newColor = Brushes.Black;
+            SolidColorBrush textColor = Brushes.White; 
+
+            switch (numeroLed)
+            {
+                case 0:
+                    newColor = isLedOn ? Brushes.Black : Brushes.White;
+                    textColor = isLedOn ? Brushes.White : Brushes.Black;
+                    break;
+                case 1:
+                    newColor = isLedOn ? Brushes.Black : Brushes.Blue;
+                    textColor = isLedOn ? Brushes.Blue : Brushes.White;
+                    break;
+                case 2:
+                    newColor = isLedOn ? Brushes.Black : Brushes.Orange;
+                    textColor = isLedOn ? Brushes.Orange : Brushes.White;
                     break;
             }
+
+            ellipse.Fill = newColor;
+
+            // Mise à jour de la couleur du texte du TextBlock associé
+            if (ellipse.Parent is Grid grid)
+            {
+                var textBlock = grid.Children[1] as TextBlock;
+                if (textBlock != null)
+                {
+                    textBlock.Foreground = textColor;
+                }
+            }
+
             byte[] payload = { numeroLed, etat };
             Debug.WriteLine(payload[0].ToString());
             Debug.WriteLine(payload[1].ToString());
 
-            // a decommentater
+            // Mise à jour des voyants
+            UpdateVoyants();
+
+            // Envoyer la commande au port série
             // serialPort1.Write(UARTProtocol.UartEncode((int)SerialProtocolManager.CommandID.LED, 2, payload), 0, 8);
         }
+
+
+
+
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove(); // Permet de déplacer la fenêtre
+        }
+
+
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized; // Minimise la fenêtre
+        }
+
+        private void MaximizeRestoreButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.WindowState == WindowState.Maximized)
+            {
+                this.WindowState = WindowState.Normal; // Restaure la fenêtre si elle est maximisée
+            }
+            else
+            {
+
+                this.WindowState = WindowState.Maximized; // Maximise la fenêtre si elle n'est pas maximisée
+            }
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close(); // Ferme la fenêtre
+        }
+
+        private void InitializeLedStates()
+        {
+            // Définir l'état initial de chaque LED --> en vrai il faudrait récuperer les infos des leds depuis le robot au chargement
+            ellipseLed1.Fill = Brushes.White;
+            ellipseLed2.Fill = Brushes.Blue;
+            ellipseLed3.Fill = Brushes.Orange;
+
+            UpdateVoyants();
+        }
+
+        // Gestion des couleurs des leds
+                private void UpdateVoyants()
+        {
+            voyantLed1.Fill = ellipseLed1.Fill == Brushes.Black ? Brushes.Black : Brushes.White;
+            voyantLed2.Fill = ellipseLed2.Fill == Brushes.Black ? Brushes.Black : Brushes.Blue;
+            voyantLed3.Fill = ellipseLed3.Fill == Brushes.Black ? Brushes.Black : Brushes.Orange;
+        }
+
 
     }
 }
