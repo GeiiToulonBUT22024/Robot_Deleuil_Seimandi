@@ -16,6 +16,7 @@ using ExtendedSerialPort;
 using System.IO.Ports;
 using System.Windows.Threading;
 using System.Diagnostics;
+using System.Numerics;
 
 namespace robotInterface
 {
@@ -41,7 +42,10 @@ namespace robotInterface
             InitializeLedStates();
 
             timerDisplay = new DispatcherTimer();
-            timerDisplay.Interval = new TimeSpan(0, 0, 0, 0, 100);
+            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            // ATTENTION TIMER MODIFIER POUR TESTTT
+            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            timerDisplay.Interval = new TimeSpan(0, 0, 0, 0, 500); // 100 -> 500
             timerDisplay.Tick += TimerDisplay_Tick;
             timerDisplay.Start();
 
@@ -54,6 +58,15 @@ namespace robotInterface
 
         private void TimerDisplay_Tick(object? sender, EventArgs e)
         {
+            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            Random rnd = new Random();
+            robot.distanceTelemetreMelenchon = (float)(rnd.NextDouble() * 100 + 10);
+            robot.distanceTelemetreGauche = (float)(rnd.NextDouble() * 100 + 10);
+            robot.distanceTelemetreCentre = (float)(rnd.NextDouble() * 100 + 10);
+            robot.distanceTelemetreDroit = (float)(rnd.NextDouble() * 100 + 10);
+            robot.distanceTelemetreLePen = (float)(rnd.NextDouble() * 100 + 10);
+            updateTelemetreBoxes();
+            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             /*if (robot.receivedText != "")
             {
                 textBoxReception.Text += robot.receivedText;
@@ -136,7 +149,6 @@ namespace robotInterface
 
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
-            
             if (btnClickFlagClear)
             {
                // btnClear.Background = Brushes.RoyalBlue;
@@ -169,14 +181,72 @@ namespace robotInterface
         }
 
         private void btnTest_Click(object sender, RoutedEventArgs e)
-        {/*
+        {
+            /*
             byte[] byteList = new byte[20];
             for (int i = 19; i >= 0; i--)
                 byteList[i]= (byte) (2*i);
             
             serialPort1.Write(byteList, 0, 20);*/
-         ////   serialPort1.Write(UARTProtocol.UartEncode((int)SerialProtocolManager.CommandID.TEXT, 7, Encoding.ASCII.GetBytes("Bonjour")), 0, 13);
+            ////   serialPort1.Write(UARTProtocol.UartEncode((int)SerialProtocolManager.CommandID.TEXT, 7, Encoding.ASCII.GetBytes("Bonjour")), 0, 13);
         }
+
+        private Vector2 getBTTranslationVector(double angle, double scaleCoef, double distance) {
+            Vector2 translateVector = new Vector2();
+            translateVector.X = (float)(Math.Cos((Math.PI / 180) * (270 + angle)) * distance * scaleCoef);
+            translateVector.Y = (float)(Math.Sin((Math.PI / 180) * (270 + angle)) * distance * scaleCoef);
+            return translateVector;
+        }
+        private void updateTelemetreBoxes() {
+            var scaleCoef = 1.5;
+
+            var angle = -47.703;
+            TransformGroup customTGELeft = new TransformGroup();
+            customTGELeft.Children.Add(new RotateTransform(angle));
+            Vector2 translationVector = getBTTranslationVector(angle, scaleCoef, robot.distanceTelemetreMelenchon);
+            customTGELeft.Children.Add(new TranslateTransform(translationVector.X, translationVector.Y));
+
+            boxTeleELeft.RenderTransform = customTGELeft;
+
+            // -------------------------------------------------
+            angle = -24.786;
+            TransformGroup customTGLeft = new TransformGroup();
+            customTGLeft.Children.Add(new RotateTransform(angle));
+            translationVector = getBTTranslationVector(angle, scaleCoef, robot.distanceTelemetreGauche);
+            customTGLeft.Children.Add(new TranslateTransform(translationVector.X, translationVector.Y));
+
+            boxTeleLeft.RenderTransform = customTGLeft;
+
+            // -------------------------------------------------
+
+            angle = 0;
+            TransformGroup customTGCenter = new TransformGroup();
+            translationVector = getBTTranslationVector(angle, scaleCoef, robot.distanceTelemetreCentre);
+            customTGCenter.Children.Add(new TranslateTransform(translationVector.X, translationVector.Y));
+
+            boxTeleCenter.RenderTransform = customTGCenter;
+
+            // -------------------------------------------------
+            angle = 24.786;
+
+            TransformGroup customTGRight = new TransformGroup();
+            customTGRight.Children.Add(new RotateTransform(angle));
+            translationVector = getBTTranslationVector(angle, scaleCoef, robot.distanceTelemetreDroit);
+            customTGRight.Children.Add(new TranslateTransform(translationVector.X, translationVector.Y));
+
+            boxTeleRight.RenderTransform = customTGRight;
+
+            // -------------------------------------------------
+            angle = 47.703;
+
+            TransformGroup customTGERight = new TransformGroup();
+            customTGERight.Children.Add(new RotateTransform(angle));
+            translationVector = getBTTranslationVector(angle, scaleCoef, robot.distanceTelemetreLePen);
+            customTGERight.Children.Add(new TranslateTransform(translationVector.X, translationVector.Y));
+
+            boxTeleERight.RenderTransform = customTGERight;
+        }
+
         private void EllipseLed_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var ellipse = sender as Ellipse;

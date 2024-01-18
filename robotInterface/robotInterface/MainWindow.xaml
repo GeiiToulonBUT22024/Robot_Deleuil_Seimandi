@@ -12,8 +12,19 @@
 
     <!-- Image en fond d'écran -->
     <Window.Background>
-        <ImageBrush ImageSource="background.png"/>
+        <ImageBrush ImageSource="assets/background.png"/>
     </Window.Background>
+
+    <Window.Resources>
+        <Style x:Key="HoverButtonStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
 
     <Grid >
 
@@ -88,16 +99,16 @@
 
 
             <!-- Visualisation -->
-            <Border Background="#141414" BorderBrush="White" BorderThickness="1" CornerRadius="0" Grid.Column="9" Grid.Row="1" Grid.RowSpan="6" Padding="100" Opacity="0.75" Margin="0,0,0,84">
+            <Border Background="#141414" BorderBrush="White" BorderThickness="1" CornerRadius="0" Grid.Column="9" Grid.Row="1" Grid.RowSpan="6" Padding="100" Opacity="0.75" Margin="0,0,0,84" Name="drawBorder">
                 <Grid>
                     <TextBlock Text="Visualisation" Foreground="White" Margin="-90,-91,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="148" Width="90"/>
-                    <Image Margin="-85,-85,-90,-107" Source="/robot.png" RenderTransformOrigin="0.5,0.5" Stretch="Uniform">
+                    <Image Margin="-85,-85,-90,-107" Source="assets/robot.png" RenderTransformOrigin="0.5,0.5" Stretch="Uniform">
                         <Image.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>
                                 <SkewTransform AngleX="0"/>
                                 <RotateTransform/>
-                                <TranslateTransform X="0"/>
+                                <TranslateTransform X="0" Y="0"/>
                             </TransformGroup>
                         </Image.RenderTransform>
                     </Image>
@@ -108,6 +119,12 @@
                         <Ellipse x:Name="voyantLed2" Fill="Black" Width="15" Height="15" Margin="4"/>
                         <Ellipse x:Name="voyantLed3" Fill="Black" Width="15" Height="15" Margin="4" />
                     </StackPanel>
+
+                    <Polygon Points="10,10 50,10 50, 20 10, 20" Fill="Red" x:Name="boxTeleELeft" Margin="83,-40,-83,40" RenderTransformOrigin="0.5,0.5" />
+                    <Polygon Points="60,10 100,10 100, 20 60, 20" Fill="Red" x:Name="boxTeleLeft" Margin="76,21,-76,-19" RenderTransformOrigin="0.5,0.5" />
+                    <Polygon Points="110,10 150,10 150, 20 110, 20" Fill="Red" x:Name="boxTeleCenter" Margin="39,57,-39,-55" RenderTransformOrigin="0.5,0.5" />
+                    <Polygon Points="160,10 200,10 200, 20 160, 20" Fill="Red" x:Name="boxTeleRight" Margin="-5,56,5,-54" RenderTransformOrigin="0.5,0.5" />
+                    <Polygon Points="210,10 250,10 250, 20 210, 20" Fill="Red" x:Name="boxTeleERight" Margin="-28,22,28,-20" RenderTransformOrigin="0.5,0.5" />
                 </Grid>
             </Border>
 
@@ -173,9 +190,9 @@
 
 
             <!-- Buttons -->
-            <Button x:Name="btnEnvoyer" Background="#141414" BorderBrush="White" BorderThickness="1" Grid.Column="1" Foreground="White" Content="ENVOYER" Grid.Row="3" HorizontalAlignment="Left" Click="btnEnvoyer_Click" Margin="0,48,0,93" Grid.RowSpan="2" Width="140" Cursor="Hand"/>
-            <Button x:Name="btnTest" Background="#141414" BorderBrush="White" BorderThickness="1" Grid.Column="3" Foreground="White" Content="TESTER" Grid.Row="3" HorizontalAlignment="Center"  Click="btnTest_Click" Margin="0,48,0,93" Grid.RowSpan="2" Width="140" Cursor="Hand"/>
-            <Button x:Name="btnClear" Background="#141414" BorderBrush="White" BorderThickness="1" Grid.Column="5" Foreground="White" Content="VIDER" Grid.Row="3" HorizontalAlignment="Left"  Click="btnClear_Click" Margin="5,48,0,93" Grid.RowSpan="2" Width="140" Cursor="Hand"/>
+            <Button x:Name="btnEnvoyer" Style="{StaticResource HoverButtonStyle}" Background="#141414" BorderBrush="White" BorderThickness="1" Grid.Column="1" Content="ENVOYER" Grid.Row="3" HorizontalAlignment="Left" Click="btnEnvoyer_Click" Margin="0,48,0,93" Grid.RowSpan="2" Width="140" Cursor="Hand"/>
+            <Button x:Name="btnTest" Style="{StaticResource HoverButtonStyle}" Background="#141414" BorderBrush="White" BorderThickness="1" Grid.Column="3" Content="TESTER" Grid.Row="3" HorizontalAlignment="Center" Click="btnTest_Click" Margin="0,48,0,93" Grid.RowSpan="2" Width="140" Cursor="Hand"/>
+            <Button x:Name="btnClear" Style="{StaticResource HoverButtonStyle}" Background="#141414" BorderBrush="White" BorderThickness="1" Grid.Column="5" Content="VIDER" Grid.Row="3" HorizontalAlignment="Left" Click="btnClear_Click" Margin="5,48,0,93" Grid.RowSpan="2" Width="140" Cursor="Hand"/>
 
         </Grid>
     </Grid>
