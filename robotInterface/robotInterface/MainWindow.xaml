@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:gauge ="clr-namespace:Syncfusion.UI.Xaml.Gauges;assembly=Syncfusion.SfGauge.Wpf"
         xmlns:local="clr-namespace:robotInterface"
         mc:Ignorable="d"
         WindowStyle="None"
@@ -26,8 +27,8 @@
         </Style>
     </Window.Resources>
 
-    <Grid >
 
+    <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
             <RowDefinition Height="*"/>
@@ -82,26 +83,27 @@
 
 
             <!-- Émission -->
-            <Border Background="#141414" BorderBrush="White" BorderThickness="1" CornerRadius="0" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="5" Margin="0,0,0,-15"  Opacity="0.75">
+            <Border Background="#141414" BorderBrush="White"  BorderThickness="1" CornerRadius="0" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="5" Margin="0,0,0,-15" Opacity="0.75">
                 <Grid>
-                    <TextBlock Text="Émission" Foreground="White" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                    <TextBox x:Name="textBoxEmission" TextWrapping="Wrap" Text="" Background="{x:Null}" AcceptsReturn="True" BorderBrush="{x:Null}" KeyUp="textBoxEmission_KeyUp" Margin="9,37,9,9"/>
+                    <TextBlock Text="Émission" Foreground="White" FontWeight="SemiBold" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <TextBox x:Name="textBoxEmission" TextWrapping="Wrap" Text="" Background="{x:Null}" AcceptsReturn="True" BorderBrush="{x:Null}" Foreground="White" KeyUp="textBoxEmission_KeyUp" Margin="9,37,9,9"/>
                 </Grid>
             </Border>
 
             <!-- Réception -->
-            <Border Background="#141414" BorderBrush="White" BorderThickness="1" CornerRadius="0" Grid.Column="7" Grid.Row="1" Grid.RowSpan="2" Margin="30,0,4,-15" Opacity="0.75">
+            <Border Background="#141414" BorderBrush="White"  BorderThickness="1" CornerRadius="0" Grid.Column="7" Grid.Row="1" Grid.RowSpan="2" Margin="30,0,4,-15" Opacity="0.75">
                 <Grid>
-                    <TextBlock Text="Réception" Foreground="White" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                    <TextBox x:Name="textBoxReception" TextWrapping="Wrap" Text="" Background="{x:Null}" AcceptsReturn="True" IsReadOnly="True" BorderBrush="{x:Null}" AcceptsTab="True" SelectionBrush="{x:Null}" SelectionTextBrush="{x:Null}" Margin="9,37,9,9"/>
+                    <TextBlock Text="Réception" Foreground="White" FontWeight="SemiBold" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <TextBox x:Name="textBoxReception" TextWrapping="Wrap" Text="" Background="{x:Null}" AcceptsReturn="True" IsReadOnly="True" BorderBrush="{x:Null}" Foreground="White" AcceptsTab="True" SelectionBrush="{x:Null}" SelectionTextBrush="{x:Null}" Margin="9,37,9,9"/>
                 </Grid>
             </Border>
+
 
 
             <!-- Visualisation -->
             <Border Background="#141414" BorderBrush="White" BorderThickness="1" CornerRadius="0" Grid.Column="9" Grid.Row="1" Grid.RowSpan="6" Padding="100" Opacity="0.75" Margin="0,0,0,84" Name="drawBorder">
                 <Grid>
-                    <TextBlock Text="Visualisation" Foreground="White" Margin="-90,-91,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="148" Width="90"/>
+                    <TextBlock Text="Visualisation" Foreground="White" FontWeight="SemiBold" Margin="-90,-91,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="148" Width="90"/>
                     <Image Margin="-85,-85,-90,-107" Source="assets/robot.png" RenderTransformOrigin="0.5,0.5" Stretch="Uniform">
                         <Image.RenderTransform>
                             <TransformGroup>
@@ -133,7 +135,7 @@
             <!-- Leds -->
             <Border Background="#141414" BorderBrush="White" BorderThickness="1" CornerRadius="0" Grid.Column="9" Grid.Row="7" Opacity="0.75" Margin="0,-20,0,-3" Grid.RowSpan="3">
                 <Grid>
-                    <TextBlock Text="Leds" Foreground="White" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <TextBlock Text="Leds" Foreground="White" FontWeight="SemiBold" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                     <StackPanel Margin="-1,1,6,-3" RenderTransformOrigin="0.5,0.5">
                         <Grid Height="324" Width="539">
                             <Grid.ColumnDefinitions>
@@ -160,13 +162,37 @@
             </Border>
 
 
-            <!-- Moteurs -->
+            <!-- Vitesse -->
             <Border Background="#141414" BorderBrush="White" BorderThickness="1" CornerRadius="0" Grid.Column="1" Grid.Row="6" Margin="-2,-123,1,-3" Grid.RowSpan="4" Opacity="0.75" Grid.ColumnSpan="5">
                 <Grid>
-                    <TextBlock Text="Moteurs" Foreground="White" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                    <StackPanel Margin="5,30,-7,0">
-                        <Label x:Name="label_CONGauche" Content="Vitesse Gauche: {value}%"/>
-                        <Label x:Name="label_CONDroit" Content="Vitesse Droite: {value}%"/>
+                    <TextBlock Text="Vitesses" Foreground="White" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-10,0,0">
+
+                        <!-- Jauge pour Vitesse Gauche -->
+                        <gauge:SfCircularGauge x:Name="LeftGauge" Height="400" Width="400" HeaderAlignment="Custom" GaugeHeaderPosition="0.58,0.75">
+                            <gauge:SfCircularGauge.GaugeHeader>
+                                <TextBlock Text="Moteur Gauche" Height="20" Width="95" FontSize="13" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" Margin="-13,55,0,0" />
+                            </gauge:SfCircularGauge.GaugeHeader>
+
+                            <gauge:SfCircularGauge.Scales>
+                                <gauge:CircularScale StartValue="-100" EndValue="100" Interval="20" StartAngle="180" SweepAngle="180" Height="254" VerticalAlignment="Top" Margin="23,160,23,0">
+                                    <!-- Les pointeurs sont gérés dans le code-behind -->
+                                </gauge:CircularScale>
+                            </gauge:SfCircularGauge.Scales>
+                        </gauge:SfCircularGauge>
+
+                        <!-- Jauge pour Vitesse Droite -->
+                        <gauge:SfCircularGauge x:Name="RightGauge" Height="400" Width="400" HeaderAlignment="Custom" GaugeHeaderPosition="0.53,0.69">
+                            <gauge:SfCircularGauge.GaugeHeader>
+                                <TextBlock Text="Moteur Droite" Height="20" Width="95" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontWeight="SemiBold" TextAlignment="Center" Margin="10,-163,0,0"/>
+                            </gauge:SfCircularGauge.GaugeHeader>
+
+                            <gauge:SfCircularGauge.Scales>
+                                <gauge:CircularScale StartValue="-100" EndValue="100" Interval="20" StartAngle="180" SweepAngle="180" Height="254" VerticalAlignment="Top" Margin="23,-11,23,0">
+                                    <!-- Les pointeurs sont gérés dans le code-behind -->
+                                </gauge:CircularScale>
+                            </gauge:SfCircularGauge.Scales>
+                        </gauge:SfCircularGauge>
                     </StackPanel>
                 </Grid>
             </Border>
@@ -176,7 +202,7 @@
             <!-- Télémètres -->
             <Border Background="#141414" BorderBrush="White" BorderThickness="1" CornerRadius="0" Grid.Column="7" Grid.Row="4" Margin="30,-8,5,-3" Grid.RowSpan="6" Opacity="0.75">
                 <Grid>
-                    <TextBlock Text="Télémètres" Foreground="White" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <TextBlock Text="Télémètres" Foreground="White" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
                     <StackPanel Height="142" Margin="0,30,0,0">
                         <Label x:Name="label_IRExtremeGauche" Content="IR Extreme Gauche: {value} cm"/>
                         <Label x:Name="label_IRGauche" Content="IR Gauche: {value} cm"/>

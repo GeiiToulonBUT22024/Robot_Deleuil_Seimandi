@@ -15,8 +15,8 @@ namespace robotInterface
         public float distanceTelemetreGauche;
         public float distanceTelemetreMelenchon;
 
-        public int consigneGauche;
-        public int consigneDroite;
+        public float consigneGauche;
+        public float consigneDroite;
 
         public byte ledBlanche;
         public byte ledBleue;

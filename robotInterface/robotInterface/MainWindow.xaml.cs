@@ -16,6 +16,8 @@ using ExtendedSerialPort;
 using System.IO.Ports;
 using System.Windows.Threading;
 using System.Diagnostics;
+using Syncfusion.UI.Xaml.Gauges;
+
 using System.Numerics;
 
 namespace robotInterface
@@ -35,7 +37,9 @@ namespace robotInterface
         private SerialProtocolManager UARTProtocol = new SerialProtocolManager();
 
 
+#pragma warning disable CS8618 
         public MainWindow()
+#pragma warning restore CS8618
         {
             InitializeComponent();
             InitializeSerialPort();
@@ -65,7 +69,14 @@ namespace robotInterface
             robot.distanceTelemetreCentre = (float)(rnd.NextDouble() * 100 + 10);
             robot.distanceTelemetreDroit = (float)(rnd.NextDouble() * 100 + 10);
             robot.distanceTelemetreLePen = (float)(rnd.NextDouble() * 100 + 10);
+
+            robot.consigneGauche = (float)(rnd.NextDouble() * 200 - 100);
+            robot.consigneDroite = (float)(rnd.NextDouble() * 200 - 100);
+
+
             updateTelemetreBoxes();
+            updateCircularGauges();
+
             // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             /*if (robot.receivedText != "")
             {
@@ -78,8 +89,9 @@ namespace robotInterface
             label_IRDroit.Content = "IR Droit: {value} cm".Replace("{value}", robot.distanceTelemetreDroit.ToString());
             label_IRExtremeDroit.Content = "IR Extreme Droit: {value} cm".Replace("{value}", robot.distanceTelemetreMelenchon.ToString());
 
-            label_CONDroit.Content = "Vitesse Droite: {value}%".Replace("{value}", robot.consigneDroite.ToString());
-            label_CONGauche.Content = "Vitesse Gauche: {value}%".Replace("{value}", robot.consigneGauche.ToString());
+           // label_CONDroit.Content = "Vitesse Droite: {value}%".Replace("{value}", robot.consigneDroite.ToString());
+            //label_CONGauche.Content = "Vitesse Gauche: {value}%".Replace("{value}", robot.consigneGauche.ToString());
+
 
             while (robot.stringListReceived.Count != 0)
             {
@@ -246,6 +258,42 @@ namespace robotInterface
 
             boxTeleERight.RenderTransform = customTGERight;
         }
+
+
+        private void updateCircularGauges()
+        {
+            updateGaugePointer(LeftGauge, robot.consigneGauche);
+            updateGaugePointer(RightGauge, robot.consigneDroite);
+        }
+
+        private void updateGaugePointer(SfCircularGauge gauge, double value)
+        {
+            if (gauge.Scales[0].Pointers.Count == 0)
+            {
+                CircularPointer circularPointer = new CircularPointer
+                {
+                    PointerType = PointerType.NeedlePointer,
+                    Value = value,
+                    NeedleLengthFactor = 0.5,
+                    NeedlePointerType = NeedlePointerType.Triangle,
+                    PointerCapDiameter = 12,
+                    NeedlePointerStroke = (SolidColorBrush)new BrushConverter().ConvertFrom("#757575"),
+                    KnobFill = (SolidColorBrush)new BrushConverter().ConvertFrom("#757575"),
+                    KnobStroke = (SolidColorBrush)new BrushConverter().ConvertFrom("#757575"),
+                    NeedlePointerStrokeThickness = 7
+                };
+
+                gauge.Scales[0].Pointers.Add(circularPointer);
+            }
+            else
+            {
+                (gauge.Scales[0].Pointers[0] as CircularPointer).Value = value;
+            }
+        }
+
+
+
+
 
         private void EllipseLed_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
