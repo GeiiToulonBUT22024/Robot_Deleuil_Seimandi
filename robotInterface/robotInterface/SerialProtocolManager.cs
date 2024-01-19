@@ -66,9 +66,11 @@ namespace robotInterface
                     break;
 
                 case (int)CommandID.TELEMETRE_IR:
-                    this.robot.distanceTelemetreGauche = msgPayload[0];
-                    this.robot.distanceTelemetreCentre = msgPayload[1];
-                    this.robot.distanceTelemetreDroit = msgPayload[2];
+                    this.robot.distanceTelemetreMelenchon = msgPayload[0];
+                    this.robot.distanceTelemetreGauche = msgPayload[1];
+                    this.robot.distanceTelemetreCentre = msgPayload[2];
+                    this.robot.distanceTelemetreDroit = msgPayload[3];
+                    this.robot.distanceTelemetreLePen = msgPayload[4];
                     break;
 
                 case (int)CommandID.CONSIGNE_VITESSE:

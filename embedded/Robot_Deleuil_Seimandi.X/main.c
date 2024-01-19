@@ -93,8 +93,8 @@ int main(void) {
         volts = ((float) result [0])* 3.3 / 4096 * 3.2;
         robotState.distanceTelemetreMelanchon = 34 / volts - 5;
 
-        unsigned char tlmMsg[] = {(unsigned char) robotState.distanceTelemetreGauche, (unsigned char) robotState.distanceTelemetreCentre, (unsigned char) robotState.distanceTelemetreDroit};
-        UartEncodeAndSendMessage(CMD_ID_TELEMETRE_IR, 3, tlmMsg);
+        unsigned char tlmMsg[] = {(unsigned char) robotState.distanceTelemetreMelanchon, (unsigned char) robotState.distanceTelemetreGauche, (unsigned char) robotState.distanceTelemetreCentre, (unsigned char) robotState.distanceTelemetreDroit, (unsigned char) robotState.distanceTelemetreLePen};
+        UartEncodeAndSendMessage(CMD_ID_TELEMETRE_IR, 5, tlmMsg);
 
         if (robotState.autoModeActivated) {
             float baseGauche = VITESSE;
