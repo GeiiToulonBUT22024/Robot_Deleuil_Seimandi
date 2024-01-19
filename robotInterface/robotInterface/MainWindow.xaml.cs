@@ -37,6 +37,7 @@ namespace robotInterface
         private SerialProtocolManager UARTProtocol = new SerialProtocolManager();
 
 
+
 #pragma warning disable CS8618 
         public MainWindow()
 #pragma warning restore CS8618
@@ -74,8 +75,9 @@ namespace robotInterface
             robot.consigneDroite = (float)(rnd.NextDouble() * 200 - 100);
 
 
+            updateSpeedGauges();
+            updateTelemetreGauges();
             updateTelemetreBoxes();
-            updateCircularGauges();
 
             // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             /*if (robot.receivedText != "")
@@ -83,6 +85,8 @@ namespace robotInterface
                 textBoxReception.Text += robot.receivedText;
                 robot.receivedText = "";
             }*/
+
+            /*
             label_IRExtremeGauche.Content = "IR Extreme Gauche: {value} cm".Replace("{value}", robot.distanceTelemetreLePen.ToString());
             label_IRGauche.Content = "IR Gauche: {value} cm".Replace("{value}", robot.distanceTelemetreGauche.ToString());
             label_IRCentre.Content = "IR Centre: {value} cm".Replace("{value}", robot.distanceTelemetreCentre.ToString());
@@ -91,7 +95,7 @@ namespace robotInterface
 
            // label_CONDroit.Content = "Vitesse Droite: {value}%".Replace("{value}", robot.consigneDroite.ToString());
             //label_CONGauche.Content = "Vitesse Gauche: {value}%".Replace("{value}", robot.consigneGauche.ToString());
-
+            */
 
             while (robot.stringListReceived.Count != 0)
             {
@@ -260,7 +264,7 @@ namespace robotInterface
         }
 
 
-        private void updateCircularGauges()
+        private void updateSpeedGauges()
         {
             updateGaugePointer(LeftGauge, robot.consigneGauche);
             updateGaugePointer(RightGauge, robot.consigneDroite);
@@ -277,9 +281,9 @@ namespace robotInterface
                     NeedleLengthFactor = 0.5,
                     NeedlePointerType = NeedlePointerType.Triangle,
                     PointerCapDiameter = 12,
-                    NeedlePointerStroke = (SolidColorBrush)new BrushConverter().ConvertFrom("#757575"),
-                    KnobFill = (SolidColorBrush)new BrushConverter().ConvertFrom("#757575"),
-                    KnobStroke = (SolidColorBrush)new BrushConverter().ConvertFrom("#757575"),
+                    NeedlePointerStroke = new BrushConverter().ConvertFrom("#757575") as SolidColorBrush,
+                    KnobFill = new BrushConverter().ConvertFrom("#757575") as SolidColorBrush,
+                    KnobStroke = new BrushConverter().ConvertFrom("#757575") as SolidColorBrush,
                     NeedlePointerStrokeThickness = 7
                 };
 
@@ -290,6 +294,47 @@ namespace robotInterface
                 (gauge.Scales[0].Pointers[0] as CircularPointer).Value = value;
             }
         }
+
+        private void updateTelemetreGauges()
+        {
+            telemetreMelenchonRange.EndValue = robot.distanceTelemetreMelenchon;
+            telemetreMelenchonRange.RangeStroke = ChooseColor(robot.distanceTelemetreMelenchon);
+            textTelemetreMelenchon.Text = robot.distanceTelemetreMelenchon.ToString("F0") + " cm";
+
+            telemetreGaucheRange.EndValue = robot.distanceTelemetreGauche;
+            telemetreGaucheRange.RangeStroke = ChooseColor(robot.distanceTelemetreGauche);
+            textTelemetreGauche.Text = robot.distanceTelemetreGauche.ToString("F0") + " cm";
+
+            telemetreCentreRange.EndValue = robot.distanceTelemetreCentre;
+            telemetreCentreRange.RangeStroke = ChooseColor(robot.distanceTelemetreCentre);
+            textTelemetreCentre.Text = robot.distanceTelemetreCentre.ToString("F0") + " cm";
+
+            telemetreDroitRange.EndValue = robot.distanceTelemetreDroit;
+            telemetreDroitRange.RangeStroke = ChooseColor(robot.distanceTelemetreDroit);
+            textTelemetreDroit.Text = robot.distanceTelemetreDroit.ToString("F0") + " cm";
+
+            telemetreLePenRange.EndValue = robot.distanceTelemetreLePen;
+            telemetreLePenRange.RangeStroke = ChooseColor(robot.distanceTelemetreLePen);
+            textTelemetreLePen.Text = robot.distanceTelemetreLePen.ToString("F0") + " cm";
+        }
+
+        private Brush ChooseColor(float distance)
+        {
+            if (distance < 20)
+            {
+                return Brushes.Red; // Rouge pour les valeurs inférieures à 20
+            }
+            else if (distance < 40)
+            {
+                return Brushes.Orange; // Orange pour les valeurs entre 20 et 40
+            }
+            else
+            {
+                return Brushes.Green; // Vert pour les valeurs supérieures à 40
+            }
+        }
+
+
 
 
 
@@ -311,35 +356,44 @@ namespace robotInterface
         {
             var etat = Convert.ToByte(isLedOn);
             SolidColorBrush newColor = Brushes.Black;
-            SolidColorBrush textColor = Brushes.White; 
+            SolidColorBrush textColor = Brushes.White;
+
+            TextBlock textBlockAssociated = null;
 
             switch (numeroLed)
             {
                 case 0:
                     newColor = isLedOn ? Brushes.Black : Brushes.White;
                     textColor = isLedOn ? Brushes.White : Brushes.Black;
+                    textBlockAssociated = textBlockLed1; // Supposons que textBlockLed1 est le TextBlock associé à ellipseLed1
                     break;
                 case 1:
                     newColor = isLedOn ? Brushes.Black : Brushes.Blue;
                     textColor = isLedOn ? Brushes.Blue : Brushes.White;
+                    textBlockAssociated = textBlockLed2; // De même pour textBlockLed2 et ellipseLed2
                     break;
                 case 2:
                     newColor = isLedOn ? Brushes.Black : Brushes.Orange;
                     textColor = isLedOn ? Brushes.Orange : Brushes.White;
+                    textBlockAssociated = textBlockLed3; // De même pour textBlockLed3 et ellipseLed3
                     break;
             }
 
             ellipse.Fill = newColor;
-
-            // Mise à jour de la couleur du texte du TextBlock associé
-            if (ellipse.Parent is Grid grid)
+            if (textBlockAssociated != null)
             {
-                var textBlock = grid.Children[1] as TextBlock;
-                if (textBlock != null)
-                {
-                    textBlock.Foreground = textColor;
-                }
+                textBlockAssociated.Foreground = textColor;
             }
+
+            // Obtenez la référence au TextBlock correspondant
+            var textBlock = FindTextBlockForLed(ellipse);
+
+            if (textBlock != null)
+            {
+                textBlock.Foreground = textColor;
+            }
+
+
 
             byte[] payload = { numeroLed, etat };
             Debug.WriteLine(payload[0].ToString());
@@ -352,6 +406,31 @@ namespace robotInterface
             // serialPort1.Write(UARTProtocol.UartEncode((int)SerialProtocolManager.CommandID.LED, 2, payload), 0, 8);
         }
 
+        private TextBlock FindTextBlockForLed(Ellipse ellipse)
+        {
+            if (ellipse.Parent is Grid grid)
+            {
+                // La position de l'ellipse dans la grille
+                int column = Grid.GetColumn(ellipse);
+
+                foreach (var child in grid.Children)
+                {
+                    if (child is TextBlock textBlock && Grid.GetColumn(textBlock) == column)
+                    {
+                        return textBlock;
+                    }
+                }
+            }
+            return null;
+        }
+
+        private void UpdateTextBlockColor(TextBlock textBlock, SolidColorBrush color)
+        {
+            if (textBlock != null)
+            {
+                textBlock.Foreground = color;
+            }
+        }
 
 
 
