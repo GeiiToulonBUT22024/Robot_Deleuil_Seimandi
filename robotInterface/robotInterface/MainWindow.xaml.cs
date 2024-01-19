@@ -121,6 +121,7 @@ namespace robotInterface
                     MessageBox.Show("Error opening serial port: " + ex.Message);
                 }
             }
+            else MessageBox.Show("Port doesn't exist");
         }
 
         public void SerialPort1_DataReceived(object? sender, DataReceivedArgs e) {
