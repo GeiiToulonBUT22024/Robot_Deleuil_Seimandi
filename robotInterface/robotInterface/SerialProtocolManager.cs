@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace robotInterface
 {
-    public class SerialProtocolManager
+    internal class SerialProtocolManager
     {
         public enum CommandID
         {
@@ -157,9 +157,13 @@ namespace robotInterface
         }
 
 
-
-        public byte[] UartEncode(int msgFunction, int msgPayloadLength, byte[] msgPayload)
+        
+        public byte[] UartEncode(SerialCommand cmd)
         {
+            byte[] msgPayload = cmd.MakePayload();
+            int msgFunction = (int) cmd.GetType();
+            int msgPayloadLength = msgPayload.Length;
+
             List<byte> payload = new List<byte>();
             payload.Add((byte)0xFE);
             payload.Add((byte)(msgFunction >> 8));

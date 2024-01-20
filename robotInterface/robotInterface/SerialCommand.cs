@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace robotInterface
 {
-    
-    abstract class SerialCommand
+
+    internal abstract class SerialCommand
     {
         // -----------------------------------
         public enum CommandType
@@ -21,6 +21,7 @@ namespace robotInterface
         // -----------------------------------
 
         public abstract void Process(Robot robot);
+        public abstract byte[] MakePayload();
         
         protected CommandType type;
         protected byte[]? payload;
@@ -61,9 +62,24 @@ namespace robotInterface
             this.payload = payload;
             this.text = Encoding.Default.GetString(payload);
         }
+
+        public SerialCommandText(string text)
+        {
+            this.type = CommandType.TEXT;
+            this.text = text;
+        }
+
         public override void Process(Robot robot)
         {
             robot.stringListReceived.Enqueue(text);
+        }
+        public override byte[] MakePayload()
+        {
+            if (this.payload is null)
+            {
+                this.payload = Encoding.UTF8.GetBytes(this.text);
+            }
+            return this.payload;
         }
     }
     // ---------------------------------------------------------
@@ -79,10 +95,19 @@ namespace robotInterface
             this.vitesseGauche = (payload[0] > 127 ? payload[0] - 256 : payload[0]);
             this.vitesseDroite = (payload[1] > 127 ? payload[1] - 256 : payload[1]);
         }
+
         public override void Process(Robot robot)
         {
             robot.consigneGauche = (float) this.vitesseGauche;
             robot.consigneDroite = (float) this.vitesseDroite;
+        }
+
+        public override byte[] MakePayload()
+        {
+            if(this.payload is null)
+                throw new NotImplementedException();
+
+            return this.payload;
         }
     }
     // ---------------------------------------------------------
@@ -112,6 +137,14 @@ namespace robotInterface
             robot.distanceTelemetreDroit = this.telemetreDroit;
             robot.distanceTelemetreLePen = this.telemetreLePen;
         }
+
+        public override byte[] MakePayload()
+        {
+            if (this.payload is null)
+                throw new NotImplementedException();
+
+            return this.payload;
+        }
     }
     // ---------------------------------------------------------
     internal class SerialCommandLED : SerialCommand
@@ -121,11 +154,19 @@ namespace robotInterface
 
         public SerialCommandLED(byte[] payload)
         {
-            this.type = CommandType.CONSIGNE_VITESSE;
+            this.type = CommandType.LED;
             this.payload = payload;
             this.numero = payload[0];
             this.state = payload[1];
         }
+
+        public SerialCommandLED(int numero, byte state)
+        {
+            this.type = CommandType.LED;
+            this.numero = numero;
+            this.state = state;
+        }
+
         public override void Process(Robot robot)
         {
             switch (this.numero) 
@@ -140,6 +181,15 @@ namespace robotInterface
                     robot.ledBlanche = this.state;
                     break;
             }
+        }
+        public override byte[] MakePayload()
+        {
+            if (this.payload is null) {
+                this.payload = new byte[2];
+                this.payload[0] = (byte)this.numero;
+                this.payload[1] = (byte)this.state;
+            }
+            return this.payload;
         }
     }
 }

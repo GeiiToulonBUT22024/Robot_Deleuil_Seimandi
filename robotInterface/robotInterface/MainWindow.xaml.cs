@@ -395,16 +395,19 @@ namespace robotInterface
             }
 
 
-
-            byte[] payload = { numeroLed, etat };
-            Debug.WriteLine(payload[0].ToString());
-            Debug.WriteLine(payload[1].ToString());
+            Debug.WriteLine(numeroLed.ToString());
+            Debug.WriteLine(etat.ToString());
 
             // Mise à jour des voyants
             UpdateVoyants();
 
             // Envoyer la commande au port série
-            // serialPort1.Write(UARTProtocol.UartEncode((int)SerialProtocolManager.CommandID.LED, 2, payload), 0, 8);
+            if(isSerialPortAvailable)
+            {
+                byte[] rawData = UARTProtocol.UartEncode(new SerialCommandLED(numeroLed, etat));
+                serialPort1.Write(rawData, 0, rawData.Length);
+            }
+                
         }
 
         private TextBlock? FindTextBlockForLed(Ellipse ellipse)
