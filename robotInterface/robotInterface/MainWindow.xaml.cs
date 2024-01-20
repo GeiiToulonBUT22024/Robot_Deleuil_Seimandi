@@ -359,7 +359,7 @@ namespace robotInterface
             SolidColorBrush newColor = Brushes.Black;
             SolidColorBrush textColor = Brushes.White;
 
-            TextBlock textBlockAssociated = null;
+            TextBlock? textBlockAssociated = null;
 
             switch (numeroLed)
             {
@@ -407,7 +407,7 @@ namespace robotInterface
             // serialPort1.Write(UARTProtocol.UartEncode((int)SerialProtocolManager.CommandID.LED, 2, payload), 0, 8);
         }
 
-        private TextBlock FindTextBlockForLed(Ellipse ellipse)
+        private TextBlock? FindTextBlockForLed(Ellipse ellipse)
         {
             if (ellipse.Parent is Grid grid)
             {
