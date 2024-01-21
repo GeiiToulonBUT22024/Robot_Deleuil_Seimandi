@@ -40,7 +40,7 @@
 
             <Canvas Height="32">
                 <Button Content="X" Click="CloseButton_Click" Height="32" Width="32" Background="#141414" Foreground="White" Canvas.ZIndex="1" Canvas.Left="1791" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <Button x:Name="maximizeRestoreButton_Copy1" Content="❐" Click="MaximizeRestoreButton_Click" Height="32" Width="32" Background="#141414" Foreground="White" Canvas.ZIndex="1" Canvas.Left="1759" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Button x:Name="maximizeRestoreButton" Content="❐" Click="MaximizeRestoreButton_Click" Height="32" Width="32" Background="#141414" Foreground="White" Canvas.ZIndex="1" Canvas.Left="1759" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <Button Content="—" Click="MinimizeButton_Click" Height="32" Width="32" Background="#141414" Foreground="White" Canvas.ZIndex="1" Canvas.Left="1727" HorizontalAlignment="Left" VerticalAlignment="Center" />
             </Canvas>
 
@@ -95,6 +95,7 @@
                 </Grid>
             </Border>
 
+           
             <!-- Réception -->
             <Border Background="#141414" BorderBrush="Gray"  BorderThickness="1" CornerRadius="0" Grid.Column="7" Grid.Row="1" Grid.RowSpan="2" Margin="30,0,4,-15" Opacity="0.75" Cursor="Arrow">
                 <Grid>
@@ -102,7 +103,6 @@
                     <TextBox x:Name="textBoxReception" TextWrapping="Wrap" Text="" Background="{x:Null}" AcceptsReturn="True" IsReadOnly="True" BorderBrush="{x:Null}" Foreground="White" AcceptsTab="True" SelectionBrush="{x:Null}" SelectionTextBrush="{x:Null}" Margin="9,37,9,9"/>
                 </Grid>
             </Border>
-
 
 
             <!-- Visualisation -->
@@ -135,8 +135,7 @@
                 </Grid>
             </Border>
 
-
-
+       
             <!-- Leds -->
             <Border Background="#141414" BorderBrush="Gray" BorderThickness="1" CornerRadius="0" Grid.Column="9" Grid.Row="7" Opacity="0.75" Margin="0,-20,0,-3" Grid.RowSpan="3" Cursor="Arrow">
                 <Grid>

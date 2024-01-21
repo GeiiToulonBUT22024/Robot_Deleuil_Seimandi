@@ -19,12 +19,11 @@ using System.Diagnostics;
 using Syncfusion.UI.Xaml.Gauges;
 
 using System.Numerics;
+using Syncfusion.Windows.Shared;
+using System.Windows.Media.Media3D;
 
 namespace robotInterface
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private bool btnClickFlag = false;
@@ -55,9 +54,10 @@ namespace robotInterface
             timerDisplay.Start();
 
             UARTProtocol.setRobot(robot);
-            this.WindowStyle = WindowStyle.None;
-            this.ResizeMode = ResizeMode.NoResize;
-            this.WindowState = WindowState.Maximized;
+            this.WindowStyle = WindowStyle.None;         // Désactive les styles Windows par défaut
+            this.ResizeMode = ResizeMode.NoResize;       // Désactive le recadrage automatique de la fenêtre
+            this.WindowState = WindowState.Maximized;    // Ouvre la fenêtre en plein écran automatiquement
+
 
         }
 
@@ -108,7 +108,8 @@ namespace robotInterface
         private void InitializeSerialPort()
         {
             string comPort = "COM4";
-            if(SerialPort.GetPortNames().Contains(comPort)){
+            if (SerialPort.GetPortNames().Contains(comPort))
+            {
                 serialPort1 = new ReliableSerialPort(comPort, 115200, Parity.None, 8, StopBits.One);
                 serialPort1.OnDataReceivedEvent += SerialPort1_DataReceived;
                 try
@@ -124,7 +125,8 @@ namespace robotInterface
             else MessageBox.Show("Port doesn't exist");
         }
 
-        public void SerialPort1_DataReceived(object? sender, DataReceivedArgs e) {
+        public void SerialPort1_DataReceived(object? sender, DataReceivedArgs e)
+        {
             // robot.receivedText += Encoding.UTF8.GetString(e.Data, 0, e.Data.Length);
             for (int i = 0; i < e.Data.Length; i++)
             {
@@ -137,45 +139,27 @@ namespace robotInterface
         {
             if (textBoxEmission.Text == "\r\n" || textBoxEmission.Text == "") return false;
 
-            byte[] payload=new byte[textBoxEmission.Text.Length];
+            byte[] payload = new byte[textBoxEmission.Text.Length];
 
             for (int i = 0; i < textBoxEmission.Text.Length; i++)
                 payload[i] = (byte)textBoxEmission.Text[i];
 
 
-                                                                                         // A décommmenter en vrai
-          //  serialPort1.SendMessage(this,payload);
+            // A décommmenter en vrai
+            //  serialPort1.SendMessage(this,payload);
             textBoxEmission.Text = "";
             return true;
         }
 
         private void btnEnvoyer_Click(object sender, RoutedEventArgs e)
         {
-            if (btnClickFlag)
-            {
-              //  btnEnvoyer.Background = Brushes.RoyalBlue;
-            }
-            else
-            {
-             //   btnEnvoyer.Background = Brushes.Beige;
-            }
             btnClickFlag = !btnClickFlag;
-
             sendMessage(false);
         }
 
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
-            if (btnClickFlagClear)
-            {
-               // btnClear.Background = Brushes.RoyalBlue;
-            }
-            else
-            {
-               // btnClear.Background = Brushes.Beige;
-            }
             btnClickFlagClear = !btnClickFlagClear;
-
             textBoxReception.Text = "";
         }
 
@@ -183,7 +167,8 @@ namespace robotInterface
         {
             if (e.Key == Key.Enter)
             {
-                if (!sendMessage(true)) {
+                if (!sendMessage(true))
+                {
                     textBoxEmission.Text = "";
                 }
             }
@@ -191,7 +176,7 @@ namespace robotInterface
 
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Escape)
+            if (e.Key == Key.Escape)
             {
                 Close();
             }
@@ -208,22 +193,27 @@ namespace robotInterface
             ////   serialPort1.Write(UARTProtocol.UartEncode((int)SerialProtocolManager.CommandID.TEXT, 7, Encoding.ASCII.GetBytes("Bonjour")), 0, 13);
         }
 
-        private Vector2 getBTTranslationVector(double angle, double scaleCoef, double distance) {
+        private Vector2 getBTTranslationVector(double angle, double scaleCoef, double distance)
+        {
             Vector2 translateVector = new Vector2();
             translateVector.X = (float)(Math.Cos((Math.PI / 180) * (270 + angle)) * distance * scaleCoef);
             translateVector.Y = (float)(Math.Sin((Math.PI / 180) * (270 + angle)) * distance * scaleCoef);
             return translateVector;
         }
-        private void updateTelemetreBoxes() {
-            var scaleCoef = 1.5;
 
-            var angle = -47.703;
-            TransformGroup customTGELeft = new TransformGroup();
-            customTGELeft.Children.Add(new RotateTransform(angle));
-            Vector2 translationVector = getBTTranslationVector(angle, scaleCoef, robot.distanceTelemetreMelenchon);
+        private void updateTelemetreBoxes()
+        {
+            var scaleCoef = 1.5; // Définit l'échelle
+
+            var angle = -47.703; // Définit l'angle de rotation
+            TransformGroup customTGELeft = new TransformGroup(); 
+            customTGELeft.Children.Add(new RotateTransform(angle)); // Créé une rotation avec l'angle spécifié
+
+            Vector2 translationVector = getBTTranslationVector(angle, scaleCoef, robot.distanceTelemetreMelenchon); // Calcule le vecteur de translation
             customTGELeft.Children.Add(new TranslateTransform(translationVector.X, translationVector.Y));
 
-            boxTeleELeft.RenderTransform = customTGELeft;
+            boxTeleELeft.RenderTransform = customTGELeft; // Applique les transformations
+
 
             // -------------------------------------------------
             angle = -24.786;
@@ -336,18 +326,13 @@ namespace robotInterface
         }
 
 
-
-
-
-
-
         private void EllipseLed_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var ellipse = sender as Ellipse;
             if (ellipse != null)
             {
                 byte numeroLed = Convert.ToByte(ellipse.Tag);
-                bool isLedOn = ellipse.Fill.ToString() == Brushes.Black.ToString(); 
+                bool isLedOn = ellipse.Fill.ToString() == Brushes.Black.ToString();
 
                 ToggleLed(ellipse, numeroLed, !isLedOn);
             }
@@ -366,17 +351,17 @@ namespace robotInterface
                 case 0:
                     newColor = isLedOn ? Brushes.Black : Brushes.White;
                     textColor = isLedOn ? Brushes.White : Brushes.Black;
-                    textBlockAssociated = textBlockLed1; // Supposons que textBlockLed1 est le TextBlock associé à ellipseLed1
+                    textBlockAssociated = textBlockLed1;
                     break;
                 case 1:
                     newColor = isLedOn ? Brushes.Black : Brushes.Blue;
                     textColor = isLedOn ? Brushes.Blue : Brushes.White;
-                    textBlockAssociated = textBlockLed2; // De même pour textBlockLed2 et ellipseLed2
+                    textBlockAssociated = textBlockLed2;
                     break;
                 case 2:
                     newColor = isLedOn ? Brushes.Black : Brushes.Orange;
                     textColor = isLedOn ? Brushes.Orange : Brushes.White;
-                    textBlockAssociated = textBlockLed3; // De même pour textBlockLed3 et ellipseLed3
+                    textBlockAssociated = textBlockLed3;
                     break;
             }
 
@@ -386,7 +371,6 @@ namespace robotInterface
                 textBlockAssociated.Foreground = textColor;
             }
 
-            // Obtenez la référence au TextBlock correspondant
             var textBlock = FindTextBlockForLed(ellipse);
 
             if (textBlock != null)
@@ -401,20 +385,18 @@ namespace robotInterface
             // Mise à jour des voyants
             UpdateVoyants();
 
-            // Envoyer la commande au port série
-            if(isSerialPortAvailable)
+            if (isSerialPortAvailable)
             {
                 byte[] rawData = UARTProtocol.UartEncode(new SerialCommandLED(numeroLed, etat));
                 serialPort1.Write(rawData, 0, rawData.Length);
             }
-                
+
         }
 
         private TextBlock? FindTextBlockForLed(Ellipse ellipse)
         {
             if (ellipse.Parent is Grid grid)
             {
-                // La position de l'ellipse dans la grille
                 int column = Grid.GetColumn(ellipse);
 
                 foreach (var child in grid.Children)
@@ -478,7 +460,7 @@ namespace robotInterface
         }
 
         // Gestion des couleurs des leds
-                private void UpdateVoyants()
+        private void UpdateVoyants()
         {
             voyantLed1.Fill = ellipseLed1.Fill == Brushes.Black ? Brushes.Black : Brushes.White;
             voyantLed2.Fill = ellipseLed2.Fill == Brushes.Black ? Brushes.Black : Brushes.Blue;
