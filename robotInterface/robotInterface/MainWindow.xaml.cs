@@ -63,7 +63,7 @@ namespace robotInterface
 
         private void TimerDisplay_Tick(object? sender, EventArgs e)
         {
-            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Pour la démo
             Random rnd = new Random();
             robot.distanceTelemetreMelenchon = (float)(rnd.NextDouble() * 100 + 10);
             robot.distanceTelemetreGauche = (float)(rnd.NextDouble() * 100 + 10);
@@ -145,21 +145,19 @@ namespace robotInterface
                 payload[i] = (byte)textBoxEmission.Text[i];
 
 
-            // A décommmenter en vrai
-            //  serialPort1.SendMessage(this,payload);
+            // Décommenter en vrai / Désactivé pour la démo
+            // serialPort1.SendMessage(this,payload);
             textBoxEmission.Text = "";
             return true;
         }
 
         private void btnEnvoyer_Click(object sender, RoutedEventArgs e)
         {
-            btnClickFlag = !btnClickFlag;
             sendMessage(false);
         }
 
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
-            btnClickFlagClear = !btnClickFlagClear;
             textBoxReception.Text = "";
         }
 
@@ -193,6 +191,7 @@ namespace robotInterface
             ////   serialPort1.Write(UARTProtocol.UartEncode((int)SerialProtocolManager.CommandID.TEXT, 7, Encoding.ASCII.GetBytes("Bonjour")), 0, 13);
         }
 
+        // Calculer les transformations des rectangles (obstacles)
         private Vector2 getBTTranslationVector(double angle, double scaleCoef, double distance)
         {
             Vector2 translateVector = new Vector2();
@@ -201,6 +200,7 @@ namespace robotInterface
             return translateVector;
         }
 
+        // Gestion de l'affichage des obsctacles par rapport au robot
         private void updateTelemetreBoxes()
         {
             var scaleCoef = 1.5; // Définit l'échelle
@@ -261,6 +261,7 @@ namespace robotInterface
             updateGaugePointer(RightGauge, robot.consigneDroite);
         }
 
+        // Gestion des jauges pour les vitesses
         private void updateGaugePointer(SfCircularGauge gauge, double value)
         {
             if (gauge.Scales[0].Pointers.Count == 0)
@@ -286,6 +287,7 @@ namespace robotInterface
             }
         }
 
+        // Gestion des jauges verticales pour les distances des télémètres
         private void updateTelemetreGauges()
         {
             telemetreMelenchonRange.EndValue = robot.distanceTelemetreMelenchon;
@@ -325,7 +327,7 @@ namespace robotInterface
             }
         }
 
-
+        // Lors d'un clic, bascule l'état
         private void EllipseLed_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var ellipse = sender as Ellipse;
@@ -338,6 +340,7 @@ namespace robotInterface
             }
         }
 
+        // Logique de gestion des couleurs des LEDs (ON/OFF)
         private void ToggleLed(Ellipse ellipse, byte numeroLed, bool isLedOn)
         {
             var etat = Convert.ToByte(isLedOn);
@@ -379,10 +382,8 @@ namespace robotInterface
             }
 
 
-            Debug.WriteLine(numeroLed.ToString());
-            Debug.WriteLine(etat.ToString());
 
-            // Mise à jour des voyants
+            // Mise à jour des LEDs sur le robot
             UpdateVoyants();
 
             if (isSerialPortAvailable)
@@ -393,6 +394,7 @@ namespace robotInterface
 
         }
 
+        // Identification des LEDs
         private TextBlock? FindTextBlockForLed(Ellipse ellipse)
         {
             if (ellipse.Parent is Grid grid)
@@ -409,15 +411,6 @@ namespace robotInterface
             }
             return null;
         }
-
-        private void UpdateTextBlockColor(TextBlock textBlock, SolidColorBrush color)
-        {
-            if (textBlock != null)
-            {
-                textBlock.Foreground = color;
-            }
-        }
-
 
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -451,7 +444,6 @@ namespace robotInterface
 
         private void InitializeLedStates()
         {
-            // Définir l'état initial de chaque LED --> en vrai il faudrait récuperer les infos des leds depuis le robot au chargement
             ellipseLed1.Fill = Brushes.White;
             ellipseLed2.Fill = Brushes.Blue;
             ellipseLed3.Fill = Brushes.Orange;
@@ -459,14 +451,12 @@ namespace robotInterface
             UpdateVoyants();
         }
 
-        // Gestion des couleurs des leds
+        // Gestion de la couleur des leds
         private void UpdateVoyants()
         {
             voyantLed1.Fill = ellipseLed1.Fill == Brushes.Black ? Brushes.Black : Brushes.White;
             voyantLed2.Fill = ellipseLed2.Fill == Brushes.Black ? Brushes.Black : Brushes.Blue;
             voyantLed3.Fill = ellipseLed3.Fill == Brushes.Black ? Brushes.Black : Brushes.Orange;
         }
-
-
     }
 }

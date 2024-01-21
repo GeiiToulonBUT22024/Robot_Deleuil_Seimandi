@@ -37,7 +37,6 @@
         <!-- Barre de titre personnalisée -->
         <DockPanel Grid.Row="0" VerticalAlignment="Top" Background="Black" Height="32" Width="1920">
 
-
             <Canvas Height="32">
                 <Button Content="X" Click="CloseButton_Click" Height="32" Width="32" Background="#141414" Foreground="White" Canvas.ZIndex="1" Canvas.Left="1791" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <Button x:Name="maximizeRestoreButton" Content="❐" Click="MaximizeRestoreButton_Click" Height="32" Width="32" Background="#141414" Foreground="White" Canvas.ZIndex="1" Canvas.Left="1759" HorizontalAlignment="Left" VerticalAlignment="Center"/>
@@ -177,7 +176,7 @@
                 <Grid>
                     <TextBlock Text="Télémètres" Foreground="White"  FontWeight="SemiBold" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
 
-                    <!-- Télémètre Mélenchon -->
+                    <!-- Télémètre Extrême Gauche -->
                     <gauge:SfLinearGauge Orientation="Vertical">
                         <gauge:SfLinearGauge.MainScale>
                             <gauge:LinearScale LabelStroke="White" LabelVisibility="Hidden"
@@ -361,7 +360,7 @@
                     </gauge:SfLinearGauge>
                     <TextBlock x:Name="textTelemetreDroit" Foreground="White" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="170,430,0,0"/>
 
-                    <!-- Télémètre Le Pen -->
+                    <!-- Télémètre Extrême Droit -->
                     <gauge:SfLinearGauge Orientation="Vertical" Cursor="Arrow">
                         <gauge:SfLinearGauge.MainScale>
                             <gauge:LinearScale LabelStroke="White" LabelVisibility="Hidden"
