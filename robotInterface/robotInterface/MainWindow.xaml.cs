@@ -458,5 +458,20 @@ namespace robotInterface
             voyantLed2.Fill = ellipseLed2.Fill == Brushes.Black ? Brushes.Black : Brushes.Blue;
             voyantLed3.Fill = ellipseLed3.Fill == Brushes.Black ? Brushes.Black : Brushes.Orange;
         }
+
+        private void ChangeTab(object sender, RoutedEventArgs e)
+        {
+            var button = (Button)sender;
+
+            if (button == btnSupervision)
+            {
+                tabs.SelectedIndex = 0;
+            }
+            else if (button == btnAsservissement)
+            {
+                tabs.SelectedIndex = 1;
+            }
+        }
+
     }
 }
